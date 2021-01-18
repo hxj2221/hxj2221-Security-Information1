@@ -1,0 +1,183 @@
+.addRecord_all {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgb(184, 183, 183);
+    /* margin-bottom: 50px; */
+    padding-bottom: 150px;
+
+}
+
+/* top */
+.addRecord_top {
+    overflow: hidden;
+}
+
+.addRecord_top>h4 {
+    padding: 20px;
+    float: left;
+    color: #666EE8;
+    /* color: #409EFF; */
+}
+
+/* 表单 */
+.addRecord_myform {
+    margin: 0 20px;
+    margin-bottom: 20px;
+}
+
+.addRecord_myform .el-from .el-input {
+    margin: 0;
+    display: block !important;
+    width: 218px;
+}
+
+.addRecord_myform .el-form .el-row {
+    display: flex;
+    justify-content: space-between;
+}
+.addRecord_myform .el-date-editor{
+    display: block;
+    width: auto;
+}
+.addRecord_myform  .el-form .el-date-editor .el-input__icon {
+    /* 控制日期图标 */
+    /* height: 150%; */
+    line-height: 120px;
+}
+.addRecord_myform .el-select .el-input .el-input__suffix{
+    height: 110px;
+}
+.addRecord_myform .el-select {
+    display: block;
+}
+
+/* 表格1  附件信息样式 */
+.addRecord_enclosure {
+    margin: 0 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.addRecord_enclosure_top {
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.addRecord_enclosure_top_left {
+    float: left;
+}
+.addRecord_enclosure_top_left>h5{
+    color: #666EE8;
+}
+.addRecord_enclosure_top_right {
+    float: right;
+}
+.addRecord_enclosure_top_right>.el-button{
+    color: #fff;
+    background: #666ee8;
+}
+.addRecord_relation_content >.el-button{
+    background: #666ee8;
+}
+.addRecord_enclosure_content {
+    margin-bottom: 20px;
+}
+.addRecord_enclosure_content .el-table th{
+    background-color: #666EE866;
+    color: #515A6E;
+}
+.addRecord_enclosure_content .el-table td,
+.el-table th {
+    text-align: center !important;
+}
+.addRecord_enclosure_content .el-table .el-link{
+    margin-right: 10px;
+}
+.addRecord_enclosure_paging {
+    float: right;
+}
+
+.addRecord_enclosure_paging .block .el-pagination__editor {
+    display: inline-block;
+}
+
+
+.addRecord_enclosure_dialog_div >.el-form{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.addRecord_enclosure_dialog_div >.el-form .el-textarea{
+    width: 80%;
+}
+.addRecord_enclosure_dialog_div >.el-form .el-input{
+    width: 80%;
+}
+.addRecord_enclosure_dialog_div >.el-form{
+    overflow: hidden;
+}
+.addRecord_enclosure_dialog_div >.el-form .el-upload{
+ float: left;
+}
+/* 表格2  关联投诉信息样式 */
+.addRecord_relation {
+    overflow: hidden;
+    margin-bottom: 50px;
+    margin: 0 20px;
+}
+
+.addRecord_relation_top {
+    float: left;
+    margin-bottom: 15px;
+}
+.addRecord_relation_top>h5{
+    color: #666EE8;
+}
+.addRecord_relation_content .el-table th{
+    background-color: #666EE866;
+    color: #515A6E;
+}
+.addRecord_relation_content .el-table td,.el-table th{
+    text-align: center ;
+}
+.addRecord_relation_content>.el-button{
+    color: #fff;
+}
+.addRecord_relation_content .el-table {
+    margin-bottom: 20px;
+}
+
+/* 固定定位按钮 样式*/
+.addRecord_button {
+    width: 100%;
+    height: 50px;
+    /* position: relative; */
+    bottom: 20px;
+    position: absolute;
+    display: block;
+
+}
+
+.addRecord_button >.button_stlye {
+    width: 70%;
+    height: 50px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 -1px 4px #b2b3b6;
+    padding: 15px;
+    position: fixed;
+    margin-left: 50px;
+    margin-bottom: 0;
+}
+
+.addRecord_button >.button_stlye>button {
+    float: right;
+    margin-left: 20px;
+   
+}
+.addRecord_button >.button_stlye>button:last-child{
+    color: #fff;
+    background: #666ee8;
+}

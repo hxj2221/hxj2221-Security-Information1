@@ -1,0 +1,68 @@
+.userthreThre {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #cccccc;
+    padding-top: 30px;
+    padding-left: 60px;
+}
+
+.userthreSpan {
+    padding-left: 5px;
+    color: #000;
+    border-left: 5px solid #666ee8;
+    font-size: 1em;
+    font-weight: 700;
+    height: 28px;
+}
+
+.userthrehead {
+    margin-right: 30px;
+}
+
+.userthrehead>>>.el-button+.el-button {
+    margin: 0;
+}
+
+.userthregr:hover {
+    background-color: #666ee8;
+}
+
+.userthregr {
+    border-left: 2px solid #ccc;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    width: 99px;
+    height: 42px;
+}
+
+.userthreb:hover {
+    background-color: #666ee8;
+}
+
+.userthreb {
+    border: 2px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 99px;
+    height: 42px;
+}
+
+.userthrec:hover {
+    background-color: #666ee8;
+}
+
+.userthrec {
+    border: 2px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.userthreWidhr {
+    width: 92%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 12px;
+}

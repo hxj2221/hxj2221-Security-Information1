@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.H-edit{
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    min-height: 820px;
+    padding-top: 30px;
+    border-radius: 5px;
+    box-shadow: 1px 0 10px rgb(204, 204, 204);
+}
+.H-edit .edit-top {
+   text-align: right;
+   margin: 20px;
+   margin-top: 0;
+}
+.H-edit .edit-top button{
+    background-color: #949aef;
+    border: none;
+}

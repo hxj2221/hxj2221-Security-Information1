@@ -1,0 +1,68 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.powerheadThre {
+    display: flex;
+    font-size: 14px;
+    color: #cccccc;
+    padding-top: 30px;
+    padding-left: 60px;
+    justify-content: flex-start;
+}
+
+.powerheadThre>>>.el-button+.el-button {
+    margin: 0;
+}
+
+.powerStaff {
+    border-left: 2px solid #ccc;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.powerStaff:hover {
+    background-color: #666ee8;
+}
+
+.powerDepart {
+    border: 2px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.powerDepart:hover {
+    background-color: #666ee8;
+}
+
+.powerRole {
+    border: 2px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.powerRole:hover {
+    background-color: #666ee8;
+}
+
+.powerAdd {
+    color: #fff;
+    background: #666ee8;
+    border-radius: 5px;
+    position: absolute;
+    left: 86%;
+}
+
+.powerAdd :hover {
+    color: none;
+}
+
+.powerWidhr {
+    width: 92%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 12px;
+}

@@ -1,0 +1,44 @@
+{
+  "id": "2289774",
+  "name": "hospital",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-icon-hospital-password",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9874468",
+      "name": "KHCFDC_打印",
+      "font_class": "dayin",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
+      "icon_id": "17606297",
+      "name": "保存",
+      "font_class": "baocun",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "998817",
+      "name": "返回",
+      "font_class": "ai207",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "17606301",
+      "name": "导出",
+      "font_class": "export",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "7964497",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    }
+  ]
+}
