@@ -6,10 +6,22 @@ import axios from 'axios'
 const qs = require('qs')
 const baseUrl = '/'
 
-export default  {
+export default {
   // 登录
   login: async (data: Object) => {
     return await service.post(`${baseUrl}api/login/LoginCheck`, data).then(res => res).catch(err => err)
+  },
+    //验证码
+    VerificationCode: async () => {
+      return await service.get(`${baseUrl}api/VerificationCode/VerificationCode`,).then(res => res).catch(err => err)
+    },
+  //记住密码
+  remember: async () => {
+    return await service.get(`${baseUrl}api/login/CheckdCookie`,).then(res => res).catch(err => err)
+  },
+   //退出
+   Exit: async () => {
+    return await service.get(`${baseUrl}api/login/Exit`,).then(res => res).catch(err => err)
   },
   // 投诉列表
   ComList: async (data: any, page: number, limit: number, id: number) => {
@@ -57,14 +69,14 @@ export default  {
   deleteAdminList: async (params: any) => {
     return await service.delete(`${baseUrl}admin`, { params }).then(res => res).catch(err => err)
   },
-  
+
   // 不良事件列表
   AdeList: async () => {
     return await service.get(`${baseUrl}api/bad/lists`).then(res => res).catch(err => err)
   },
   // 不良新增
-  badAdd: async (params:Object) => {
-    return await service.post(`${baseUrl}api/bad/bad_add`,params).then(res => res).catch(err => err)
+  badAdd: async (params: Object) => {
+    return await service.post(`${baseUrl}api/bad/bad_add`, params).then(res => res).catch(err => err)
   },
   // 不良事件轻重程度
   // Weight: async () => {
@@ -80,12 +92,12 @@ export default  {
   // },
   // 员工管理
   // 员工列表显示
-  staffList: async (params:any,did:'',name:'') => {
-    return await service.get(`${baseUrl}api/Permission_Level/GetList`,{params:{did,name}}).then(res => res).catch(err => err)
+  staffList: async (params: any, did: '', name: '') => {
+    return await service.get(`${baseUrl}api/Permission_Level/GetList`, { params: { did, name } }).then(res => res).catch(err => err)
   },
   // 员工添加
-  staffAdd: async (data:any) => {
-    return await service.post(`${baseUrl}api/Permission_Level/InsertWorkers`,data).then(res => res).catch(err => err)
+  staffAdd: async (data: any) => {
+    return await service.post(`${baseUrl}api/Permission_Level/InsertWorkers`, data).then(res => res).catch(err => err)
   },
   // 员工编号
   staffNum: async () => {
@@ -101,65 +113,65 @@ export default  {
     return await service.get(`${baseUrl}api/Permission_Level/GetRole`).then(res => res).catch(err => err)
   },
   // 员工状态
-  staffState: async (params:any) => {
-    return await service.post(`${baseUrl}api/Permission_Level/OutService`,params).then(res => res).catch(err => err)
+  staffState: async (params: any) => {
+    return await service.post(`${baseUrl}api/Permission_Level/OutService`, params).then(res => res).catch(err => err)
   },
   // 员工编辑
-  staffEdit: async (params:any) => {
-    return await service.post(`${baseUrl}api/Permission_Level/UpdateWorkers`,params).then(res => res).catch(err => err)
+  staffEdit: async (params: any) => {
+    return await service.post(`${baseUrl}api/Permission_Level/UpdateWorkers`, params).then(res => res).catch(err => err)
   },
   // 编辑详情
   staffEditDetail: async (uid) => {
-    return await service.get(`${baseUrl}api/Permission_Level/GetInformation`,{params:{uid}}).then(res => res).catch(err => err)
+    return await service.get(`${baseUrl}api/Permission_Level/GetInformation`, { params: { uid } }).then(res => res).catch(err => err)
   },
   // 员工删除
-  staffDel: async (data:Object) => {
-    return await service.post(`${baseUrl}api/Permission_Level/NewDelete`,data).then(res => res).catch(err => err)
+  staffDel: async (data: Object) => {
+    return await service.post(`${baseUrl}api/Permission_Level/NewDelete`, data).then(res => res).catch(err => err)
   },
   //
-  getrole: async (params:Object) => {
+  getrole: async (params: Object) => {
     return await service.get(`${baseUrl}api/Employees/add`).then(res => res).catch(err => err)
   },
   // 科室管理
   // 列表
-  DepList: async (params:any) => {
-    return await service.get(`${baseUrl}api/T_Department/GetList`,{params}).then(res => res).catch(err => err)
+  DepList: async (params: any) => {
+    return await service.get(`${baseUrl}api/T_Department/GetList`, { params }).then(res => res).catch(err => err)
   },
   // 新增
-  DepAdd: async (params:Object) => {
-    return await service.post(`${baseUrl}api/T_Department/NewInsert`,params).then(res => res).catch(err => err)
+  DepAdd: async (params: Object) => {
+    return await service.post(`${baseUrl}api/T_Department/NewInsert`, params).then(res => res).catch(err => err)
   },
- // 上级科室
- DepDepart: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Department/DeptHelper`,params).then(res => res).catch(err => err)
-},
-// 科室状态
-DepState: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Department/DepState`,params).then(res => res).catch(err => err)
-},
-// 编辑详情
-DepEdit: async (params:any) => {
-  return await service.get(`${baseUrl}api/T_Department/DepartmentDetails`,{params}).then(res => res).catch(err => err)
-},
-// 确认编辑
-DepSureEdit: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Department/UpdateDepart`,params).then(res => res).catch(err => err)
-},
-// 删除
-DepDel: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Department/NewDelete`,params).then(res => res).catch(err => err)
-},
-// 角色
-// 列表或搜索
-RoleList: async (params:any) => {
-  return await service.get(`${baseUrl}api/T_Role/GetList`,{params}).then(res => res).catch(err => err)
-},
-// 状态
-RoleState: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Role/OutService`,params).then(res => res).catch(err => err)
-},
-// 删除
-RoleDel: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Role/DeleteRole`,params).then(res => res).catch(err => err)
-},
+  // 上级科室
+  DepDepart: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Department/DeptHelper`, params).then(res => res).catch(err => err)
+  },
+  // 科室状态
+  DepState: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Department/DepState`, params).then(res => res).catch(err => err)
+  },
+  // 编辑详情
+  DepEdit: async (params: any) => {
+    return await service.get(`${baseUrl}api/T_Department/DepartmentDetails`, { params }).then(res => res).catch(err => err)
+  },
+  // 确认编辑
+  DepSureEdit: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Department/UpdateDepart`, params).then(res => res).catch(err => err)
+  },
+  // 删除
+  DepDel: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Department/NewDelete`, params).then(res => res).catch(err => err)
+  },
+  // 角色
+  // 列表或搜索
+  RoleList: async (params: any) => {
+    return await service.get(`${baseUrl}api/T_Role/GetList`, { params }).then(res => res).catch(err => err)
+  },
+  // 状态
+  RoleState: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Role/OutService`, params).then(res => res).catch(err => err)
+  },
+  // 删除
+  RoleDel: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Role/DeleteRole`, params).then(res => res).catch(err => err)
+  },
 }

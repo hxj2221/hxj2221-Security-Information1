@@ -30,10 +30,8 @@
           </slot>
         </div>
       </div>
-      <slot name="drawer">
-       
-      </slot>
-     
+      <slot name="drawer"> </slot>
+
       <div class="operation-content">
         <!-- 基本信息 -->
         <div class="box-Information">
@@ -119,7 +117,12 @@
         </div>
 
         <!-- 科室反馈 -->
-        <div class="box-feedback">
+        <div
+          class="box-feedback"
+          v-if="
+            operationsdata.Event_State == 10 || operationsdata.Event_State == 20
+          "
+        >
           <div class="box-top">
             <el-row type="flex" class="row-bg" justify="space-between">
               <el-col :span="7" :push="1"
@@ -173,7 +176,7 @@
               </el-row>
             </div>
             <!-- 改进完成科室 -->
-            <div v-show="operationsdata.Event_State == 19">
+            <div v-show="operationsdata.Event_State == 20">
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" :push="1"
                   ><div class="grid-content bg-purple">
@@ -233,7 +236,7 @@
           class="box-feedback"
           v-show="
             operationsdata.Event_State !== 10 &&
-            operationsdata.Event_State !== 19
+            operationsdata.Event_State !== 20
           "
         >
           <div class="box-top">
@@ -338,7 +341,7 @@
               </div>
               <!-- 院内讨论 -->
               <div v-show="checkstate == 12">
-                    <el-row type="flex" class="row-bg" justify="space-between">
+                <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
                       <span class="label">选择抄送部门:</span>
@@ -386,13 +389,13 @@
               <!-- 医患沟通 -->
               <div
                 v-show="
-                  checkstate == 42 ||
-                  checkstate == 14 ||
+                  checkstate == 13 ||
                   checkstate == 15 ||
                   checkstate == 16 ||
                   checkstate == 17 ||
                   checkstate == 18 ||
-                  checkstate == 13
+                  checkstate == 19 ||
+                  checkstate == 14
                 "
               >
                 <el-row type="flex" class="row-bg" justify="space-between">
@@ -413,18 +416,18 @@
                   class="row-bg"
                   justify="space-between"
                   v-show="
-                    checkstate == 42 ||
-                    checkstate == 14 ||
+                    checkstate == 13 ||
                     checkstate == 15 ||
                     checkstate == 16 ||
                     checkstate == 17 ||
-                    checkstate == 18
+                    checkstate == 18 ||
+                    checkstate == 19
                   "
                 >
                   <el-col :span="20" :push="1">
                     <div
                       class="grid-content bg-purple"
-                      v-show="checkstate == 42"
+                      v-show="checkstate == 13"
                     >
                       <span class="label">初步意见:</span>
                       <el-input
@@ -436,7 +439,7 @@
                     </div>
                     <div
                       class="grid-content bg-purple"
-                      v-show="checkstate == 14 || checkstate == 18"
+                      v-show="checkstate == 15 || checkstate == 19"
                     >
                       <span class="label">情况说明:</span>
                       <el-input
@@ -447,7 +450,7 @@
                       ></el-input>
                     </div>
                     <div
-                      v-show="checkstate == 15"
+                      v-show="checkstate == 16"
                       class="grid-content bg-purple"
                     >
                       <span class="label">处理意见:</span>
@@ -459,7 +462,7 @@
                       ></el-input>
                     </div>
                     <div
-                      v-show="checkstate == 16 || checkstate == 17"
+                      v-show="checkstate == 17 || checkstate == 18"
                       class="grid-content bg-purple"
                     >
                       <span class="label">事实及理由:</span>
@@ -474,7 +477,7 @@
                 </el-row>
               </div>
               <!-- 持续改进【科室】 -->
-              <div v-show="checkstate == 19">
+              <div v-show="checkstate == 20">
                 <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
@@ -498,7 +501,7 @@
               </div>
 
               <!-- 改进完成医院 -->
-              <div v-show="checkstate == 22">
+              <div v-show="checkstate == 23">
                 <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="20" :push="1"
                     ><div class="grid-content bg-purple">
@@ -525,7 +528,7 @@
                 </el-row>
               </div>
               <!-- 结束 -->
-              <div v-show="checkstate == 23">
+              <div v-show="checkstate == 24">
                 <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
@@ -604,7 +607,12 @@
             </div>
             <div
               class="box-feedback"
-              v-show="checkstate == 8 || checkstate == 9 || checkstate == 7"
+              v-show="
+                checkstate == 8 ||
+                checkstate == 9 ||
+                checkstate == 7 ||
+                checkstate == 10
+              "
             >
               <div class="box-top">
                 <el-row type="flex" class="row-bg" justify="space-between">
@@ -657,15 +665,15 @@
             <!-- 附件 -->
             <div
               v-show="
-                checkstate == 10 ||
                 checkstate == 11 ||
-                checkstate == 13 ||
+                checkstate == 12 ||
                 checkstate == 14 ||
-                checkstate == 16 ||
+                checkstate == 15 ||
                 checkstate == 17 ||
                 checkstate == 18 ||
-                checkstate == 21 ||
-                checkstate == 22
+                checkstate == 19 ||
+                checkstate == 22 ||
+                checkstate == 23
               "
             >
               <el-row
@@ -770,7 +778,7 @@
               icon="el-icon-finished"
               v-show="
                 (checkstate !== 10 &&
-                  checkstate !== 19 &&
+                  checkstate !== 20 &&
                   checkstate !== 9 &&
                   checkstate !== 8) ||
                 operationsdata.Event_State == 10
@@ -780,7 +788,7 @@
             >
             <el-button
               type="primary"
-              v-show="checkstate == 10 || checkstate == 19"
+              v-show="checkstate == 10 || checkstate == 20"
               @click="Issue"
               >下发</el-button
             >
@@ -851,7 +859,7 @@ export default {
   },
   data() {
     return {
-      duplicate:'',//抄送部门
+      duplicate: "", //抄送部门
       rejectreson: "", //驳回原因
       sendreson: "", //退回原因
       reasons: "", //事实及理由
@@ -863,7 +871,7 @@ export default {
       type: "", //投诉类别
       typelist: "", //投诉类别列表
       degree: "", //责任度
-      degreelist: "", //责任度列表
+      degreelist: [], //责任度列表
       agentname: "", //经办人姓名
       agentphone: "", //经办人联系方式
       treatment: "", // 诊疗经过
@@ -916,45 +924,14 @@ export default {
     };
   },
   methods: {
+    //确认提交
     submit() {
-      // console.log(this.$parent.operationsdata);
-      // let duty = this.duty.map((x) => {
-      //   return x[1];
-      // });
-      // var params = {
-      //   A_Opinion: this.Handling, //处理意见
-      //   A_Main_Facts: this.facts, //主要事实
-      //   A_Dispute: this.focus, //争议焦点
-      //   A_Preliminary_Comments: this.preliminary, //初步意见
-      //   A_Appointment_Date: this.date, //约定日期
-      //   A_Information_Note: this.note, //情况说明
-      //   A_Reason: this.reasons, //事实及理由
-      //   A_Measures: this.measures, //管理措施
-      //   A_Economic_Loss: this.loss, //直接经济损失
-      //   Complaint_D_M_ID: this.type, //投诉类别
-      //   D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-      //   New_D_M_ID: this.checkstate, //选中状态
-      //   A_Operation: 12, //当前登录人id
-      //   D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-      //   U_ID: this.liable, //责任人
-      //   New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
-      //   Ag_Phone: this.agentphone, //经办人联系方式
-      //   E_Number: "", //附件编号
-      //   // Duty: duty.toString(), //责任科室
-      //   Peopel: this.peopel.toString(), //当事员工
-      //   I_After: this.treatment, //诊疗经过
-      //   I_Reply: this.response, //针对性答复
-      //   CC: this.duplicate, //抄送部门
-      //   A_Input:this.needtime,//输入天数
-      //   K_Identification: 2, //持续改进标识 0 医院 1 科室
-      // };
-      // console.log(params);
       //改进完成（科室）
-      if (this.$parent.operationsdata.E_S_ID == 19) {
+      if (this.$parent.operationsdata.E_S_ID == 20) {
         let data = {
           D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
           U_ID: this.liable, //责任人
-          K_Operation: 12, //当前登录人id
+          K_Operation: sessionStorage.getItem("uid"), //当前登录人id
           E_Number: "", //附件编号
           K_Analysis: this.analysis, //根因分析
           K_Opinion: this.responsibility, //责任意见
@@ -963,45 +940,239 @@ export default {
         };
         console.log(123);
         service.AddKaizen(qs.stringify(data)).then((res) => {
-          console.log(res);
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
         });
-      } else if (this.$parent.operationsdata.E_S_ID == 10) {
-        //科室调查
+      } //科室调查
+      else if (this.$parent.operationsdata.E_S_ID == 10) {
         let params = {
           D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: 12, //当前登录人id
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
           E_Number: "", //附件编号
           Peopel: this.peopel.toString(), //当事员工
           I_After: this.treatment, //诊疗经过
           I_Reply: this.response, //针对性答复
         };
         service.AddInvestigation(qs.stringify(params)).then((res) => {
-          console.log(res);
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
         });
-      } else if (this.checkstate == 22) {
-        //改进完成（医院）
+      } //改进完成（医院）
+      else if (this.checkstate == 23) {
         let params = {
-          K_Identification: 0, //持续改进标识 0 为医院
           D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          K_Operation: 12, //当前登录人id
-          A_Operation: 12, //当前登录人id
+          K_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          K_Identification: 0, //持续改进标识 0 为医院
           E_Number: "", //附件编号
           K_Opinion: this.Handling, //处理意见
           K_Measures: this.measures, //管理措施
-          New_D_M_ID: this.checkstate, //选中状态
         };
         service.AddApproval(qs.stringify(params)).then((res) => {
-          console.log(res);
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      } //院内讨论
+      else if (this.checkstate == 12) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          CC: this.duplicate, //抄送部门
+          A_Main_Facts: this.facts, //主要事实
+          A_Dispute: this.focus, //争议焦点
+          E_Number: "", //附件编号
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      } //医患沟通中
+      else if (this.checkstate == 13) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          A_Preliminary_Comments: this.preliminary, //初步意见
+          A_Appointment_Date: this.date, //约定日期
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      }
+      //人民调解
+      else if (this.checkstate == 14) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          A_Appointment_Date: this.date, //约定日期
+          E_Number: "", //附件编号
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      }
+      //责任鉴定中、司法诉讼
+      else if (this.checkstate == 15 || this.checkstate == 19) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          A_Appointment_Date: this.date, //约定日期
+          A_Information_Note: this.note, //情况说明
+          E_Number: "", //附件编号
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      } //患方推迟
+      else if (this.checkstate == 16) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          A_Opinion: this.Handling, //处理意见
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      } //中止调解、终止调解
+      else if (this.checkstate == 17 || this.checkstate == 18) {
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          A_Reason: this.reasons, //事实及理由
+          E_Number: "", //附件编号
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      }
+      //已结束
+      else if (this.checkstate == 24) {
+         let duty = "";
+        if (this.duty !== "") {
+          duty = this.duty.map((x) => {
+            return x[1];
+          });
+        }
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          Duty: duty.toString(), //责任科室
+          Complaint_D_M_ID: this.type, //投诉类别
+          A_Degree: this.degree, //责任度
+          A_Economic_Loss: this.loss, //直接经济损失
+          A_Opinion: this.Handling, //处理意见
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
         });
       } else {
         let params = {
           D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: 12, //当前登录人id
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
           New_D_M_ID: this.checkstate, //选中状态
           D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
         };
         service.AddApproval(qs.stringify(params)).then((res) => {
-          console.log(res);
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "操作失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
         });
       }
     },
@@ -1011,16 +1182,22 @@ export default {
       var params = {
         D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
         New_D_M_ID: this.checkstate, //选中状态
-        A_Operation: 1, //当前登录人id
+        A_Operation: sessionStorage.getItem("uid"), //当前登录人id
         D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
         New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
         Ag_Phone: this.agentphone, //经办人联系方式
         A_Return_Reasons: this.sendreson, //退回原因
       };
-      console.log(params);
-
       service.AddApproval(qs.stringify(params)).then((res) => {
-        console.log(res);
+        if (res.code == 0) {
+          this.$router.go(0);
+        } else {
+          this.$message({
+            message: "退回失败",
+            type: "error",
+            duration: 1000,
+          });
+        }
       });
     },
     // 驳回
@@ -1028,54 +1205,82 @@ export default {
       var params = {
         D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
         New_D_M_ID: this.checkstate, //选中状态
-        A_Operation: 1, //当前登录人id
+        A_Operation: sessionStorage.getItem("uid"), //当前登录人id
         D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
         New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
         Ag_Phone: this.agentphone, //经办人联系方式
         A_Reject_Reasons: this.rejectreson, //驳回原因
       };
-      console.log(params);
-
       service.AddApproval(qs.stringify(params)).then((res) => {
-        console.log(res);
+        if (res.code == 0) {
+          this.$router.go(0);
+        } else {
+          this.$message({
+            message: "驳回失败",
+            type: "error",
+            duration: 1000,
+          });
+        }
       });
     },
     // 下发
     Issue() {
-      console.log(this.issue);
-
-      let issue = "";
-      if (this.issue !== "") {
-        issue = this.issue.map((x) => {
-          return x[1];
-        });
-      }
-      let Kaizen = "";
-      if (this.Kaizen !== "") {
-        Kaizen = this.Kaizen.map((x) => {
-          return x[1];
-        });
-      }
-
-      var params = {
-        D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-        New_D_M_ID: this.checkstate, //选中状态
-        A_Operation: 1, //当前登录人id
-        D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-        New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
-        Ag_Phone: this.agentphone, //经办人联系方式
-        E_Number: "", //附件编号
-        Kaizen: Kaizen.toString(), //持续改进（科室）
-        D_Name: issue.toString(), //下发科室
-        K_Identification: 1, //持续改进标识 1 为科室
-      };
-      console.log(params);
-      service.AddApproval(qs.stringify(params)).then((res) => {
-        console.log(res);
-      });
-      // console.log(issue);
+      //科室自查
       if (this.checkstate == 10) {
-      } else if (this.checkstate == 19) {
+        let issue = "";
+        if (this.issue !== "") {
+          issue = this.issue.map((x) => {
+            return x[1];
+          });
+        }
+        var params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
+          Ag_Phone: this.agentphone, //经办人联系方式
+          D_Name: issue.toString(), //下发科室
+          A_Input: this.needtime, //输入天数
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "下发失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
+      }//持续改进（科室） 
+      else if (this.checkstate == 20) {
+        let Kaizen = "";
+        if (this.Kaizen !== "") {
+          Kaizen = this.Kaizen.map((x) => {
+            return x[1];
+          });
+        }
+        var params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
+          New_D_M_ID: this.checkstate, //选中状态
+          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
+          Kaizen: Kaizen.toString(), //持续改进（科室）
+          K_Identification: 1, //持续改进标识 1 为科室
+        };
+        service.AddApproval(qs.stringify(params)).then((res) => {
+          if (res.code == 0) {
+            this.$router.go(0);
+          } else {
+            this.$message({
+              message: "下发失败",
+              type: "error",
+              duration: 1000,
+            });
+          }
+        });
       }
     },
     handleClose() {
@@ -1107,9 +1312,12 @@ export default {
     },
   },
   created() {
-    var id = 1; //当前登录人id
-    
+    var id = sessionStorage.getItem("uid"); //当前登录人id 1 医务处  2 科室三  4 科室二
+    // console.log(id)
     service.AddManaged(4).then((res) => {
+      res.data.splice(0, 1);
+      res.data.splice(3, 1);
+      res.data.splice(13, 1);
       this.statelist = res.data;
     });
     service.AddManaged(3).then((res) => {

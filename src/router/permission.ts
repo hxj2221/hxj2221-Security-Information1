@@ -1,3 +1,6 @@
+
+
+
 function hasPermission(route, role) {
   if (route.meta && route.meta.roles) {
     return route.meta.roles.indexOf(role) !== -1

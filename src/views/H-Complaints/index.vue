@@ -186,15 +186,14 @@
 import Complaintslist from "../H-Complaints/components/complaintslist";
 import Addcom from "../H-Complaints/components/addcom";
 import Look from "../H-Complaints/components/Look";
-import Read from "../H-Complaints/components/read";
 import Conserve from "../H-Complaints/components/conserve";
 import Table from "../H-Complaints/components/Tables";
 import Operation from "../H-Complaints/components/operation";
 // 添加投诉
 import service from "@/service/index";
 export default {
-  components: { Complaintslist, Addcom, Look, Read, Conserve, Table, Operation },
-
+  components: { Complaintslist, Addcom, Look, Conserve, Table, Operation },
+    inject: ["reload"],
   data() {
     return {
       drawer:false,

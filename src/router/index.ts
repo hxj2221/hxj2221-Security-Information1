@@ -3,6 +3,7 @@ import VueRouter, { RawLocation } from 'vue-router'
 import Login from '../views/Login/index.vue'
 import Home from '../views/Home/index.vue'
 import store from '@/store'
+
 import { generateRoutes } from './permission'
 
 /**

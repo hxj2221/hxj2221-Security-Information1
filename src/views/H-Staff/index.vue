@@ -31,12 +31,7 @@
         :header-cell-style="{ background: '#C2C5F6' }"
         :cell-style="{ background: '#fff' }"
       >
-        <el-table-column
-          label="序号"
-          width="50"
-          prop="U_ID"
-        >
-        </el-table-column>
+        <el-table-column type="index" width="50" label="序号"> </el-table-column>
         <el-table-column prop="U_Number" label="工号" width="100">
         </el-table-column>
         <el-table-column prop="U_Name" label="员工姓名" width="120">
@@ -191,25 +186,36 @@ export default {
     },
     // switch开关
     changeSwitch(val, row) {
-      // console.log(val,row)
       let params={
         U_ID:row.U_ID,
-        U_Information_Change:12
+        U_Information_Change:sessionStorage.getItem('uid')//登录人id
       }
       console.log(qs.stringify(params))
       service.staffState(qs.stringify(params)).then(res=>{
         console.log(res)
-        if(res.result==true){
-          this.$message({
-            type: "success",
-            message: "员工启用成功!",
-          });
-        }else{
-          this.$message({
-            type: "success",
-            message: "员工停用成功!",
+        if(res.code==0){
+           if(res.msg=='员工停用成功'){
+             this.$message({
+            type: "error",
+            message: res.msg,
           });
         }
+        else{
+             this.$message({
+            type: "success",
+            message: res.msg,
+          });
+        }
+        }
+        else{
+              this.$message({
+            type: "error",
+            message: res.msg,
+          });
+        }
+       
+       
+        
       })
     },
     // 编辑
@@ -228,7 +234,7 @@ export default {
     //删除：
     handleDelete(index, row) {
       let params={
-        U_ID:row[index].U_ID
+        U_ID:row[index].U_ID//当前操作行用户id
       }
       service.staffDel(qs.stringify(params)).then(res=>{
         // console.log(res)

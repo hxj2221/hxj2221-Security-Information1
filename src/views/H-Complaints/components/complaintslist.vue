@@ -101,12 +101,14 @@
 
       <div class="Complaints-footer">
         <el-pagination
-          :page-size="20"
-          :pager-count="11"
-          layout="prev, pager, next"
-          :total="1000"
-        >
-        </el-pagination>
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[6, 8, 10]"
+      :page-size="sizes"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
       </div>
     </div>
   </div>
@@ -114,13 +116,15 @@
 <script>
 import Tables from "../components/Tables";
 import service from "@/service/index";
-// const qs = require('qs')
-import qss from "@/service/qs";
 export default {
   components: { Tables },
 
   data() {
     return {
+      total:100,//总条数
+      uid:'',//uid
+      sizes:6,//页面条数
+      currentPage4:1,//当前页数
       tableData: [],
       complaintname: "", //投诉人姓名
       complainttype: "", //投诉方式
@@ -140,6 +144,29 @@ export default {
   },
 
   methods: {
+     handleSizeChange(val) {
+       this.sizes=val
+      service.ComList({}, this.currentPage4,this.sizes, this.uid).then((res) => {
+      this.tableData = res.data;
+       this.total=res.count
+      res.data.forEach((element) => {
+        var index = element.Complaint_Time.indexOf("T");
+        element.Complaint_Time = element.Complaint_Time.substring(0, index);
+      });
+    });
+
+      },
+      handleCurrentChange(val) {
+        this.currentPage4=val
+         service.ComList({}, this.currentPage4,this.sizes, this.uid).then((res) => {
+          this.tableData = res.data;
+         this.total=res.count
+      res.data.forEach((element) => {
+        var index = element.Complaint_Time.indexOf("T");
+        element.Complaint_Time = element.Complaint_Time.substring(0, index);
+      });
+    });
+      },
     getRowClass({ rowIndex }) {
       if (rowIndex == 0) {
         return "background:#c2c5f6;color:#000";
@@ -149,12 +176,8 @@ export default {
     },
     // 搜索事件
     clicks() {
-      console.log(this.complaintsate)
-
       var StartTime = "";
-
       var EndTime = "";
-
       // 将标准时间转为年月日
       if(this.complaintsate!==null&&this.complaintsate!==''){
           var stime = new Date(this.complaintsate[0]);
@@ -168,9 +191,10 @@ export default {
         StartTime: StartTime, //开始时间
         EndTime: EndTime, //结束时间
       };
-      service.ComList(params, 1, 12, 8).then((res) => {
+      service.ComList(params, this.currentPage4,this.sizes, this.uid).then((res) => {
         console.log(params);
         this.tableData = res.data;
+        this.total=res.count
         res.data.forEach((element) => {
           var index = element.Complaint_Time.indexOf("T");
           element.Complaint_Time = element.Complaint_Time.substring(0, index);
@@ -186,39 +210,32 @@ export default {
         EndTime: this.EndTime, //结束时间
       };
       console.log(params)
-      service.ComList(params, 1, 12, 8).then((res) => {
+      service.ComList(params, this.currentPage4,this.sizes, this.uid).then((res) => {
         console.log(params);
         this.tableData = res.data;
+       this.total=res.count
         res.data.forEach((element) => {
           var index = element.Complaint_Time.indexOf("T");
           element.Complaint_Time = element.Complaint_Time.substring(0, index);
         });
       });
       }
-      
-       
-      // this.StartTime=StartTime
-      // this.EndTime=EndTime
- 
     },
   },
   created() {
+   this.uid=sessionStorage.getItem('uid')
     service.AddManaged(5).then((res) => {
-      // console.log(res);
       this.options = res.data; // 投诉方式
     });
     service.AddManaged(4).then((res) => {
-      // console.log(res);
-      this.option = res.data; // 投诉方式
+      this.option = res.data; // 事件状态
     });
-    service.ComList({}, 1,12, 8).then((res) => {
-      // console.log(res);
+    service.ComList({}, this.currentPage4,this.sizes, this.uid).then((res) => {
       this.tableData = res.data;
+     this.total=res.count
       res.data.forEach((element) => {
         var index = element.Complaint_Time.indexOf("T");
-        // console.log(index);
         element.Complaint_Time = element.Complaint_Time.substring(0, index);
-        // console.log(element.Complaint_Time);
       });
     });
   },

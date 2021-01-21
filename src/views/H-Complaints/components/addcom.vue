@@ -350,12 +350,12 @@ export default {
       comgenders: [
         //性别
         {
-          value: "1",
-          lable: "男",
-        },
-        {
           value: "0",
           lable: "女",
+        },
+        {
+          value: "1",
+          lable: "男",
         },
         {
           value: "2",
@@ -419,13 +419,27 @@ export default {
         Ag_Name: this.agentname, //经办人姓名
         New_Ag_Name: this.newagentname, //新经办人姓名
         Ag_Phone: this.agentphone, //经办人手机号
-        U_ID: 1, //获取当前登录人ID
+        U_ID:  sessionStorage.getItem('uid'), //获取当前登录人ID
       };
 
-      let uid = 1;
+      let uid =  sessionStorage.getItem('uid');
       console.log(params);
       service.AddComponent(qs.stringify(params)).then((res) => {
-        // console.log(res);
+           if(res.code==0){
+             this.$message({
+                message: '添加成功',
+                type: "success",
+                duration: 1000,
+              });
+           this.$router.go(0)
+        }
+        else{
+         this.$message({
+                message: '添加失败',
+                type: "error",
+                duration: 1000,
+              });
+        }
       });
     },
     backss() {
