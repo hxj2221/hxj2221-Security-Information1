@@ -617,67 +617,50 @@
                         </div></el-col
                       >
                     </el-row>
-                    <el-row
-                      v-if="
-                        it.A_Economic_Loss !== '' && it.A_Economic_Loss !== null
-                      "
-                    >
+                    <el-row v-if="it.A_Economic_Loss !== '' && it.A_Economic_Loss !== null">
                       <el-col :span="4"
                         ><div class="grid-content bg-purple">
                           <span class="label">直接经济损失：</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                       <el-col :span="20"
                         ><div class="grid-content bg-purple-light">
                           <span class="value">{{ it.A_Economic_Loss }}</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                     </el-row>
                     <el-row v-if="it.A_Reject_Reasons">
                       <el-col :span="4"
                         ><div class="grid-content bg-purple">
                           <span class="label">驳回原因：</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                       <el-col :span="20"
                         ><div class="grid-content bg-purple-light">
                           <span class="value">{{it.A_Reject_Reasons}}</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                     </el-row>
                     <el-row v-if="it.A_Return_Reasons">
                       <el-col :span="4"
                         ><div class="grid-content bg-purple">
                           <span class="label">退回原因：</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                       <el-col :span="20"
                         ><div class="grid-content bg-purple-light">
                           <span class="value">{{it.A_Return_Reasons}}</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                     </el-row>
                     <el-row v-if="it.CCDepartment">
                       <el-col :span="4"
                         ><div class="grid-content bg-purple">
                           <span class="label">抄送部门：</span>
-                        </div></el-col
-                      >
+                        </div></el-col >
                       <el-col :span="20"
                         ><div class="grid-content bg-purple-light">
                           <span class="value">{{ it.CCDepartment }}</span>
-                        </div></el-col
-                      >
+                        </div></el-col>
                     </el-row>
 
-                    <div
-                      style="border-bottom: 0.5px solid #797979; width: 100%"
-                    ></div>
+                    <div style="border-bottom: 0.5px solid #797979; width: 100%" ></div>
                     <div class="file clearfix">
-                      <div
-                        v-for="itemsssss in it.E_Name"
-                        :key="itemsssss.E_Name"
-                      >
+                      <div v-for="itemsssss in it.E_Name" :key="itemsssss.E_Name" >
                         <span class="filename">{{ itemsssss.E_Name }}</span>
                         <span class="filedetaile">查看</span>
                       </div>
@@ -704,50 +687,29 @@
                   <el-col :span="4"
                     ><div class="grid-content bg-purple">
                       <span class="label">投诉人姓名：</span>
-                    </div></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].C_I_Name
-                      }}</span>
-                    </div></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple"></div>
-                    <span class="label">性别：</span></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].C_I_Gender
-                      }}</span>
-                    </div></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple"></div>
-                    <span class="label">年龄：</span></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple-light">
-                      <span class="value"
-                        >{{ item.ComplaintsInformation[0].C_I_Age }}岁</span
-                      >
-                    </div></el-col
-                  >
+                    </div></el-col >
+                  <el-col :span="4" ><div class="grid-content bg-purple-light">
+                      <span class="value">{{item.ComplaintsInformation[0].C_I_Name}}</span>
+                    </div></el-col>
+                  <el-col :span="4">
+                    <div class="grid-content bg-purple"></div>
+                    <span class="label">性别：</span></el-col>
+                  <el-col :span="4">
+                    <div class="grid-content bg-purple-light">
+                      <span class="value">{{item.ComplaintsInformation[0].C_I_Gender }}</span>
+                    </div></el-col>
+                  <el-col :span="4" ><div class="grid-content bg-purple"></div>
+                    <span class="label">年龄：</span></el-col>
+                  <el-col :span="4"><div class="grid-content bg-purple-light">
+                      <span class="value" >{{ item.ComplaintsInformation[0].C_I_Age }}岁</span>
+                    </div></el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple"></div>
-                    <span class="label">投诉方式：</span></el-col
-                  >
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].Complaint_Mode
-                      }}</span>
-                    </div></el-col
-                  >
+                  <el-col :span="4" ><div class="grid-content bg-purple"></div>
+                    <span class="label">投诉方式：</span></el-col>
+                  <el-col :span="4"><div class="grid-content bg-purple-light">
+                      <span class="value">{{item.ComplaintsInformation[0].Complaint_Mode}}</span>
+                    </div></el-col>
                   <el-col :span="4"
                     ><div class="grid-content bg-purple">
                       <span class="label">与患者关系：</span>

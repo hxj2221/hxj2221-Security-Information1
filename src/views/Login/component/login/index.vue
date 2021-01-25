@@ -137,7 +137,7 @@ export default {
             Account: this.ruleForm.account,
             Pwd: this.ruleForm.password,
             cbx:this.remember==true?"on":this.remember,
-            img:this.ruleForm.captcha,
+            code:this.ruleForm.captcha,
           };
           this.logining = true;
           service.login(qs.stringify(params)).then((res) => {
