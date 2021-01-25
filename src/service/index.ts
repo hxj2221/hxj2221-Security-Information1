@@ -174,4 +174,28 @@ export default {
   RoleDel: async (params: any) => {
     return await service.post(`${baseUrl}api/T_Role/DeleteRole`, params).then(res => res).catch(err => err)
   },
+  // 权限列表
+powList: async (params:any) => {
+  return await service.get(`${baseUrl}api/T_Permission/Qurey`,params).then(res => res).catch(err => err)
+},
+// 权限删除
+ powDel: async (params:object) => {
+  return await service.get(`${baseUrl}api/T_Permission/Delete`,{params}).then(res => res).catch(err => err)
+},
+// 权限编辑
+powEdit: async (params:object) => {
+  return await service.get(`${baseUrl}api/T_Permission/GetOne`,{params}).then(res => res).catch(err => err)
+},
+// 权限保存
+powEditsave: async (params:any) => {
+  return await service.post(`${baseUrl}api/T_Permission/Update`,params).then(res => res).catch(err => err)
+},
+// 权限添加
+powAdd: async (params:any) => {
+  return await service.get(`${baseUrl}api/T_Permission/GetPname`,params).then(res => res).catch(err => err)
+},
+// 权限添加保存
+savepower: async (params:object) => {
+  return await service.post(`${baseUrl}api/T_Permission/Insert`,params).then(res => res).catch(err => err)
+},
 }
