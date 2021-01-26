@@ -10,32 +10,38 @@
     <div class="headMiddle">
       <i class="el-icon-s-fold" @click="handleFold" v-if="!isFold"></i>
       <i class="el-icon-s-unfold" @click="handleFold" v-else></i>
+      <!-- 面包屑 -->
+      <!-- <el-breadcrumb separator-class="el-icon-arrow-right" class="">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+      </el-breadcrumb> -->
     </div>
 
     <div class="headEnd">
       <el-dropdown>
         <span>
           <p class="headEndCtx">
-            <span v-html="admin">admin</span>
+            <el-avatar :src="avatarUrl" :alt="'头像'"></el-avatar>
+            <span v-html="admin">{{ admin }}</span>
           </p>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="personal"
+          <el-dropdown-item @click.native="dialogVisible = true"
             >个人信息</el-dropdown-item
           >
-          <el-dropdown-item @click.native="editpassword">修改密码</el-dropdown-item>
+          <el-dropdown-item @click.native="logOut">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="logOut">消息通知</el-dropdown-item>
           <el-dropdown-item @click.native="logOut">退出系统</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
 
-    <!-- <head-edit
+    <head-edit
       :dialogVisible="dialogVisible"
       :avatarUrl="avatarUrl"
       @changeAvatar="changeAvatar"
       @closeDialog="closeDialog"
-    ></head-edit> -->
+    ></head-edit>
   </div>
 </template>
 
@@ -49,6 +55,7 @@ import HeadEdit from "./HeadEdit/HeadEdit.vue";
 })
 export default class HeadBar extends Vue {
   name: string = "兰州大学第二医院";
+  avatarUrl: string = require("@/assets/avatar/avatar.jpg");
   dialogVisible: boolean = false;
 
   // vuex数据
@@ -66,17 +73,15 @@ export default class HeadBar extends Vue {
   public logOut() {
     this.$router.push({ name: "login" });
   }
-public editpassword() {
-    this.$router.push({ name: "/Account" });
-  }
-  public personal() {
-    console.log(this)
-    this.$router.push({ name: "/Personal" });
-  }
+
   public handleFold() {
     this.UpdateIsFold(!this.isFold);
   }
 
+  // 修改头像（获得修改后头像地址）
+  public changeAvatar(newAvatar) {
+    this.avatarUrl = newAvatar;
+  }
 
   // 关闭编辑对话框，用于同步父子组件状态
   public closeDialog(val) {

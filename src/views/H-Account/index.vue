@@ -9,8 +9,8 @@
               <p class="accountHead">手机号</p>
             </div>
             <div style="display: flex; justify-content: space-between">
-              <p class="accountMain">177****1234</p>
-              <p class="accountClick" @click="phoneyz = true">更改</p>
+              <p class="accountMain" :model="phone"></p>
+              <p class="accountClick" @click="PhoneDialog()">更改</p>
             </div>
           </td>
         </tr>
@@ -74,15 +74,18 @@
               placeholder="请输入验证码"
               v-model="phonecode"
             />
-            <button class="account-change-phonehq" id="one" :disabled="phonedd">
-              {{ phonecodeTxt }}
+            <button v-show="show" @click="getCode" class="account-change-phonehq" id="one">
+              发送验证码
             </button>
+            <el-button v-show="!show" class="Forgetcode_button1"
+              >{{ count }}秒重发</el-button
+            >
           </div>
           <div>
-            <button class="account-change-phoneclick" @click="phoneno">
+            <button class="account-change-phoneclick" @click="cancel">
               取消
             </button>
-            <button class="account-change-phoneclick" @click="phoneyes">
+            <button class="account-change-phoneclick" @click="Code">
               验证
             </button>
           </div>
@@ -112,12 +115,15 @@
                 placeholder="请输入验证码"
                 v-model="changephonecode"
               />
-              <button class="account-new-hqcode" id="one" :disabled="phonedd">
-                {{ phonecodeTxt }}
+              <button v-show="shows" @click="getCodes" class="account-new-hqcode" id="one">
+               获取验证码
               </button>
+              <el-button v-show="!shows" class="Forgetcode_button1"
+              >{{ counts }}秒重发</el-button
+            >
             </div>
             <div>
-              <button class="account-new-click" @click="phonenewyes">
+              <button class="account-new-click" @click="sureChange">
                 确认
               </button>
             </div>
@@ -190,7 +196,7 @@
                 placeholder="请输入验证码"
                 v-model="newemailcode"
               />
-              <button class="account-new-hqcode" id="one" :disabled="phonedd">
+              <button class="account-new-hqcode" @click="getEmailCode" id="one" :disabled="phonedd">
                 {{ phonecodeTxt }}
               </button>
             </div>
@@ -228,9 +234,12 @@
               placeholder="请输入验证码"
               v-model="pwdphonecode"
             />
-            <button class="account-change-phonehq" id="one" :disabled="phonedd">
+            <button v-show="Pwdshow" class="account-change-phonehq" @click="getPwdCode" id="one" >
               {{ phonecodeTxt }}
             </button>
+            <el-button v-show="!Pwdshow" class="Forgetcode_button1"
+              >{{ Pwdcount }}秒重发</el-button
+            >
           </div>
           <div>
             <button class="account-change-phoneclick" @click="pwdno">
@@ -320,56 +329,146 @@
 
 <script>
 import userthre from "../component/userthre";
+import service from '@/service/index'
+import qs from 'qs'
 export default {
   components: { userthre },
 
   data() {
     return {
       pageTitle: "账户管理",
-      phone: "",
-      phonecode: "",
-      changephone: "",
-      changephonecode: "",
+      phone: "",//手机号
+      phonecode: "",//手机验证码
+      changephone: "",//更换手机号
+      changephonecode: "",//输入验证码
+      count:'',//多长时间后再次发送验证码
       emailphone: "",
       emailphonecode: "",
       newemail: "",
       newemailcode: "",
-      pwdphone: "",
-      pwdphonecode: "",
+      pwdphone: "",//手机号
+      pwdphonecode: "",//验证码
       newpwd: "",
       newpwds: "",
       wxphone: "",
       wxphonecode: "",
       phonedd: "",
-      phoneyz: false,
-      phonenew: false,
+      phoneyz: false,//更换手机号弹框
+      phonenew: false,//绑定新的手机号弹框
       emailyz: false,
       emailnew: false,
       pwdyz: false,
       pwdnew: false,
       wxbtn: false,
       wxnewbtn: false,
-      phonecodeTxt: "获取验证码",
+      phonecodeTxt:'获取验证码',
+      show: true,
+      count: "",
+      timer: null,
+      
+      shows: true,
+      counts: "",
+      timers: null,
+
+      Pwdshow: true,
+      Pwdcount: "",
+      Pwdtimer: null,
     };
   },
 
   methods: {
-    // 手机
-    phoneyes() {
-      this.phonenew = true;
-      this.phoneyz = false;
+    // 解绑
+    // 更改手机号弹框
+    PhoneDialog(){
+      this.phoneyz=!this.phoneyz
     },
-    phoneno() {
-      this.phoneyz = false;
+    // 发送短信验证码
+    getCode(){
+      let params={
+        Phone:this.phone
+      }
+      service.getCode(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(/^1[34578]\d{9}$/.test(this.phone) == ""){
+          this.$message.error("手机号错误或为空，请重新输入");
+        }else{
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+              } else {
+                this.show = true;
+                clearInterval(this.timer);
+                this.timer = null;
+              }
+            }, 1000);
+          }
+        }
+      })
     },
-
-    //新手机
-    phonenewyes() {
-      this.phonenew = false;
+    // 验证
+    Code(){
+      let params={
+        number:this.phone,
+        Verification:this.phonecode
+      }
+      service.checkCode(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(res.result==true){
+          this.phoneyz=!this.phoneyz
+          this.phonenew=!this.phonenew
+        }
+      })
     },
-    phonenewno() {
-      this.phonenew = false;
+    //发送验证码
+    getCodes(){
+      let params={
+        Phone:this.changephone
+      }
+      service.getCode(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(/^1[34578]\d{9}$/.test(this.changephone) == ""){
+          this.$message.error("手机号错误或为空，请重新输入");
+        }else{
+          const TIME_COUNT = 60;
+          if (!this.timers) {
+            this.counts = TIME_COUNT;
+            this.shows = false;
+            this.timers = setInterval(() => {
+              if (this.counts > 0 && this.counts <= TIME_COUNT) {
+                this.counts--;
+              } else {
+                this.shows = true;
+                clearInterval(this.timer);
+                this.timers = null;
+              }
+            }, 1000);
+          }
+        }
+      })
     },
+    // 确认更改手机号
+    sureChange(){
+      let params={
+        number:this.changephone,
+        Verification:this.phonecode
+      }
+      service.checkCode(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(res.result==true){
+          this.phonenew=!this.phonenew
+        }
+      })
+    },
+    // 取消更改
+    cancel(){
+      this.phoneyz=!this.phoneyz
+    },
+    // 获取邮箱验证码
+    getEmailCode(){},
     // 邮箱
     emailno() {
       this.emailyz = false;
@@ -382,18 +481,59 @@ export default {
     emailnewyes() {
       this.emailnew = false;
     },
-
+    // 密码
+    // 获取验证码
+    getPwdCode(){
+      let params={
+        Phone:this.pwdphone
+      }
+      console.log(params)
+      service.getCode(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(/^1[34578]\d{9}$/.test(this.pwdphone) == ""){
+          this.$message.error("手机号错误或为空，请重新输入");
+        }else{
+          const TIME_COUNT = 60;
+          if (!this.Pwdtimer) {
+            this.Pwdcount = TIME_COUNT;
+            this.Pwdshow = false;
+            this.Pwdtimer = setInterval(() => {
+              if (this.Pwdcount > 0 && this.Pwdcount <= TIME_COUNT) {
+                this.Pwdcount--;
+              } else {
+                this.Pwdshow = true;
+                clearInterval(this.Pwdtimer);
+                this.Pwdtimer = null;
+              }
+            }, 1000);
+          }
+        }
+      })
+    },
+    
     // 密码
     pwdyes() {
-      this.pwdyz = false;
-      this.pwdnew = true;
+      this.pwdyz=!this.pwdyz
+      this.pwdnew = !this.pwdnew;
+      
+    // 取消
     },
     pwdno() {
       this.pwdyz = false;
     },
     // 新密码
     pwdnewyes() {
-      this.pwdnew = false;
+      let params={
+        Pwd:this.newpwd,
+        RPwd:this.newpwds,
+        U_ID:12
+      }
+      service.CodePwd(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(res.result==true){
+          this.pwdnew = !this.pwdnew;
+        }
+      })
     },
     // 解绑微信
     wxno() {

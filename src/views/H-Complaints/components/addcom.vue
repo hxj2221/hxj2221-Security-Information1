@@ -217,11 +217,9 @@
               ><div class="grid-content bg-purple">
                 <span> 经办人姓名<span>*</span> </span>
                 <el-input
-                  v-model="newagentname"
+                  v-model="agentname"
                   placeholder="请输入姓名"
                 ></el-input>
-                <el-input v-model="agentname" disabled v-show="false"></el-input
-                ><!--老的名字 -->
               </div>
             </el-col>
             <el-col :span="6" :pull="6"
@@ -324,7 +322,6 @@ export default {
 
   data() {
     return {
-      
       props: { multiple: true },
       agree: "", //同意要求
 
@@ -334,7 +331,6 @@ export default {
         },
       ],
       agentname: "", //经办人姓名
-      newagentname: "", //新经办人姓名
       agentphone: "", //经办人手机号
       comnumber: "", //业务编号
       comdata: "", //投诉日期
@@ -351,11 +347,11 @@ export default {
         //性别
         {
           value: "0",
-          lable: "女",
+          lable: "男",
         },
         {
           value: "1",
-          lable: "男",
+          lable: "女",
         },
         {
           value: "2",
@@ -411,35 +407,19 @@ export default {
         C_I_Name: this.comname, //投诉人姓名
         C_I_Phone: this.comphone, //投诉人电话
         C_I_Gender: this.comgender, //投诉人性别
-        C_I_Age_Type: 0, //岁月天
+        C_I_Age_Type:0, //岁月天
         C_I_Age: this.comagenumber, //投诉人年龄
         D_M_ID: this.relation, //患者关系
         Reply_Time: this.consulttime, //协商时间
         Dispute_State: this.nature, //事件性质this.nature
         Ag_Name: this.agentname, //经办人姓名
-        New_Ag_Name: this.newagentname, //新经办人姓名
         Ag_Phone: this.agentphone, //经办人手机号
-        U_ID:  sessionStorage.getItem('uid'), //获取当前登录人ID
+        U_ID: 1, //获取当前登录人ID
       };
-
-      let uid =  sessionStorage.getItem('uid');
+      let uid = 1;
       console.log(params);
       service.AddComponent(qs.stringify(params)).then((res) => {
-           if(res.code==0){
-             this.$message({
-                message: '添加成功',
-                type: "success",
-                duration: 1000,
-              });
-           this.$router.go(0)
-        }
-        else{
-         this.$message({
-                message: '添加失败',
-                type: "error",
-                duration: 1000,
-              });
-        }
+        // console.log(res);
       });
     },
     backss() {
@@ -464,7 +444,16 @@ export default {
       .AddManaged(5)
       .then((res) => {
         // console.log(res);
+
         this.commodes = res.data; // 投诉方式
+
+        // this.natures = res.data.character; // 事件性质
+
+        // this.$message({
+        //   message: res.msg,
+        //   type: "error",
+        //   duration: 1000,
+        // });
       })
       .catch((err) => {});
     service.AddDepartment().then((res) => {

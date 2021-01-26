@@ -13,8 +13,13 @@ export interface AjaxResponse {
 }
 
 // baseURL根据实际进行定义
+<<<<<<< HEAD
 // const baseURL = 'http://bt1.wlqqlp.com:8081/';
  const baseURL = 'https://localhost:44348/';
+=======
+// const baseURL = 'http://bt1.wlqqlp.com:8082/';
+const baseURL = 'https://localhost:44348/';
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
 
 // 创建axios实例
 const service = axios.default.create({

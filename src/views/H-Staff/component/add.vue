@@ -250,20 +250,20 @@ export default {
       addStaff: {
         U_Number:'' , // 员工编号
         // staffNumInput: "",
-        U_Name: "", // 姓名
-        U_Age: "", //年龄
+        U_Name: "哈哈哈", // 姓名
+        U_Age: "21", //年龄
         // staffAgesel: "", //年龄岁月天
         U_Gender: "", //性别
-        U_Phone: "", //手机号
-        U_Mailbox: "", //电子邮箱
-        U_IDNumber: "", //证件号码
+        U_Phone: "15139435805", //手机号
+        U_Mailbox: "3187755913@qq.com", //电子邮箱
+        U_IDNumber: "422723200008203820", //证件号码
         // RID : "", //职位
         U_Detailed_Address: "", //详细地址
         D_ID  : "", //所属科室
         RID : "", //角色
         Department_Head: "", //科室负责人
         U_State: "", //员工状态
-        Pwd: "", //密码
+        Pwd: "123qwe", //密码
         U_Address: [], //地址
       },
       Address:[],
@@ -319,7 +319,7 @@ export default {
         U_State:this.addStaff.U_State,
         Pwd:this.addStaff.Pwd,
         U_Address:this.Address,
-        U_Founder:12
+        U_Founder:4
       }
       console.log(params);
       service.staffAdd(qs.stringify(params)).then((res) => {
@@ -329,8 +329,7 @@ export default {
     },
     handleChange(cityvalue) {
       
-      //  this.Address=CodeToText[cityvalue[0]]+'/'+CodeToText[cityvalue[1]]+'/'+CodeToText[cityvalue[2]]
-      //  console.log(this.addStaff.U_Address)
+       
        
     },
     // 子调用父

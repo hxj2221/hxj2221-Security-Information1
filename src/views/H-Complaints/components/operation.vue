@@ -30,8 +30,15 @@
           </slot>
         </div>
       </div>
-      <slot name="drawer"> </slot>
-
+      <el-drawer title="快捷查看" :visible.sync="drawer" :with-header="false" size='59%'>
+      
+          <ul class="infinite-list"  style="overflow:auto;height:870px;texr-aligin:center">
+             <Look  style="width:100%; margin:0px 0px;padding:0px 0px">
+          <div slot="title"></div>
+          </Look>
+          </ul>
+        
+      </el-drawer>
       <div class="operation-content">
         <!-- 基本信息 -->
         <div class="box-Information">
@@ -53,7 +60,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.D_I_Number }}</span>
+                  <span class="value">TS11545414544145</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -62,7 +69,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.E_S_Name }}</span>
+                  <span class="value">调查中</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -71,7 +78,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.D_Name }}</span>
+                  <span class="value">心血管内科/血液科</span>
                 </div></el-col
               >
             </el-row>
@@ -83,7 +90,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Name }}</span>
+                  <span class="value">张大牛</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -92,7 +99,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Gender }}</span>
+                  <span class="value">男</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -101,28 +108,58 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Age }}</span>
+                  <span class="value">65</span>
                 </div></el-col
               >
             </el-row>
 
             <div
-              style="
-                border-bottom: 0.5px solid #e0e2fa;
-                width: 100%;
-                margin-bottom: 20px;
-              "
+              style="border-bottom: 0.5px solid #e0e2fa; width: 100%; margin-bottom: 20px"
             ></div>
           </div>
         </div>
+        <!-- 经办人信息 -->
+        <div class="box-feedback" v-show="false">
+          <div class="box-top">
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="7" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="feedback-title"><b>经办人信息</b></span>
+                </div></el-col
+              >
+            </el-row>
+          </div>
+          <div class="feedback-content">
+            <!-- 操作区域 -->
 
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="10" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">经办人姓名:</span>
+                  <el-input
+                    type="input"
+                    v-model="reason"
+                    placeholder="请填写"
+                    autosize
+                  ></el-input></div
+              ></el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="10" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">经办人联系电话:</span>
+                  <el-input
+                    type="input"
+                    v-model="reason"
+                    placeholder="请填写"
+                    autosize
+                  ></el-input></div
+              ></el-col>
+            </el-row>
+          </div>
+        </div>
         <!-- 科室反馈 -->
-        <div
-          class="box-feedback"
-          v-if="
-            operationsdata.Event_State == 10 || operationsdata.Event_State == 20
-          "
-        >
+        <div class="box-feedback" v-show="false">
           <div class="box-top">
             <el-row type="flex" class="row-bg" justify="space-between">
               <el-col :span="7" :push="1"
@@ -134,7 +171,7 @@
           </div>
           <div class="feedback-content">
             <!-- 操作区域 -->
-            <div v-show="operationsdata.Event_State == 10">
+            <div>
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" :push="1"
                   ><div class="grid-content bg-purple">
@@ -142,9 +179,9 @@
                     <el-select v-model="peopel" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
-                        :key="item.U_ID"
-                        :label="item.U_Name"
-                        :value="item.U_ID"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select></div
@@ -156,7 +193,7 @@
                     <span class="label">诊疗经过:</span>
                     <el-input
                       type="textarea"
-                      v-model="treatment"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
@@ -168,25 +205,101 @@
                     <span class="label">针对性答复:</span>
                     <el-input
                       type="textarea"
-                      v-model="response"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
                 ></el-col>
               </el-row>
             </div>
-            <!-- 改进完成科室 -->
-            <div v-show="operationsdata.Event_State == 20">
+            <el-row
+              type="flex"
+              class="row-bg"
+              justify="space-between"
+              style="margin: 20px 0"
+            >
+              <el-col :span="15" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">附件信息:</span>
+                </div></el-col
+              >
+              <el-col :span="2" :pull="1"
+                ><div class="grid-content bg-purple">
+                  <el-button
+                    type="primary"
+                    icon="el-icon-circle-plus"
+                    @click="upfile()"
+                    style="background-color: #666ee8; border: none"
+                    >上传附件</el-button
+                  >
+                </div></el-col
+              >
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="22" :push="1"
+                ><div class="grid-content bg-purple">
+                  <el-table
+                    :data="filelist"
+                    style="width: 100%"
+                    :header-cell-style="getRowClass"
+                  >
+                    <el-table-column prop="ID" label="ID" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filename" label="文件名" width="width">
+                    </el-table-column>
+                    <el-table-column prop="describe" label="描述" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filesize" label="文件大小" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uptime" label="更新时间" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filetype" label="文件类型" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uploader" label="上传人员" width="width">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                      <template slot-scope="scope">
+                        <slot name="fileoper">
+                          <el-button
+                            @click="handleClick(scope.row)"
+                            type="text"
+                            size="small"
+                            >下载</el-button
+                          >
+                          <el-button type="text" size="small">删除</el-button>
+                        </slot>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div></el-col
+              >
+            </el-row>
+          </div>
+        </div>
+        <!-- 审批操作 -->
+        <div class="box-feedback">
+          <div class="box-top">
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="7" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="feedback-title"><b>审批操作</b></span>
+                </div></el-col
+              >
+            </el-row>
+          </div>
+          <div class="feedback-content">
+            <!-- 操作区域 -->
+            <div>
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" :push="1"
                   ><div class="grid-content bg-purple">
-                    <span class="label">选择责任人:</span>
-                    <el-select v-model="liable" placeholder="请选择责任人">
+                    <span class="label">下发科室:</span>
+                    <el-select v-model="peopel" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in liablelist"
-                        :key="item.U_ID"
-                        :label="item.U_Name"
-                        :value="item.U_ID"
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select></div
@@ -195,10 +308,10 @@
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="20" :push="1"
                   ><div class="grid-content bg-purple">
-                    <span class="label">根因分析:</span>
+                    <span class="label">主要事实:</span>
                     <el-input
                       type="textarea"
-                      v-model="analysis"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
@@ -207,45 +320,28 @@
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="20" :push="1"
                   ><div class="grid-content bg-purple">
-                    <span class="label">责任意见:</span>
+                    <span class="label">争议焦点:</span>
                     <el-input
                       type="textarea"
-                      v-model="responsibility"
-                      placeholder="请填写"
-                      autosize
-                    ></el-input></div
-                ></el-col>
-              </el-row>
-              <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="20" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">整改措施:</span>
-                    <el-input
-                      type="textarea"
-                      v-model="rectification"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
                 ></el-col>
               </el-row>
             </div>
-          </div>
-        </div>
-        <!-- 审批操作 -->
-        <div
-          class="box-feedback"
-          v-show="
-            operationsdata.Event_State !== 10 &&
-            operationsdata.Event_State !== 20
-          "
-        >
-          <div class="box-top">
-            <el-row type="flex" class="row-bg" justify="space-between">
-              <el-col :span="7" :push="1"
+            <el-row
+              type="flex"
+              class="row-bg"
+              justify="space-between"
+              style="margin: 20px 0"
+            >
+              <el-col :span="15" :push="1"
                 ><div class="grid-content bg-purple">
-                  <span class="feedback-title"><b>审批操作</b></span>
+                  <span class="label">附件信息:</span>
                 </div></el-col
               >
+<<<<<<< HEAD
             </el-row>
           </div>
           <div class="feedback-content">
@@ -638,68 +734,20 @@
                     ><div class="grid-content bg-purple">
                       <span class="feedback-title"><b>经办人信息</b></span>
                     </div></el-col
+=======
+              <el-col :span="2" :pull="1"
+                ><div class="grid-content bg-purple">
+                  <el-button
+                    type="primary"
+                    icon="el-icon-circle-plus"
+                    @click="upfile()"
+                    style="background-color: #666ee8; border: none"
+                    >上传附件</el-button
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
                   >
-                </el-row>
-              </div>
-              <div class="feedback-content">
-                <!-- 操作区域 -->
-
-                <el-row
-                  type="flex"
-                  class="row-bg"
-                  justify="space-between"
-                  style="margin-left: 10px"
-                >
-                  <el-col :span="10" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">经办人姓名:</span>
-                      <el-input
-                        type="input"
-                        v-model="agentname"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row
-                  type="flex"
-                  class="row-bg"
-                  justify="space-between"
-                  style="margin-left: 10px"
-                >
-                  <el-col :span="10" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">经办人联系电话:</span>
-                      <el-input
-                        type="input"
-                        v-model="agentphone"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-            </div>
-            <!-- 附件 -->
-            <div
-              v-show="
-                checkstate == 11 ||
-                checkstate == 12 ||
-                checkstate == 14 ||
-                checkstate == 15 ||
-                checkstate == 17 ||
-                checkstate == 18 ||
-                checkstate == 19 ||
-                checkstate == 22 ||
-                checkstate == 23
-              "
-            >
-              <el-row
-                type="flex"
-                class="row-bg"
-                justify="space-between"
-                style="margin: 20px 0"
+                </div></el-col
               >
+<<<<<<< HEAD
                 <el-col :span="15" :push="1"
                   ><div class="grid-content bg-purple">
                     <span class="label">附件信息:</span>
@@ -763,36 +811,55 @@
                 >
               </el-row>
             </div>
+=======
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="22" :push="1"
+                ><div class="grid-content bg-purple">
+                  <el-table
+                    :data="filelist"
+                    style="width: 100%"
+                    :header-cell-style="getRowClass"
+                  >
+                    <el-table-column prop="ID" label="ID" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filename" label="文件名" width="width">
+                    </el-table-column>
+                    <el-table-column prop="describe" label="描述" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filesize" label="文件大小" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uptime" label="更新时间" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filetype" label="文件类型" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uploader" label="上传人员" width="width">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                      <template slot-scope="scope">
+                        <slot name="fileoper">
+                          <el-button
+                            @click="handleClick(scope.row)"
+                            type="text"
+                            size="small"
+                            >下载</el-button
+                          >
+                          <el-button type="text" size="small">删除</el-button>
+                        </slot>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div></el-col
+              >
+            </el-row>
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
           </div>
         </div>
         <!-- 提交 -->
         <div class="box-button">
           <slot name="submit">
-            <el-button
-              type="primary"
-              icon="el-icon-finished"
-              v-show="
-                (checkstate !== 10 &&
-                  checkstate !== 20 &&
-                  checkstate !== 9 &&
-                  checkstate !== 8) ||
-                operationsdata.Event_State == 10
-              "
-              @click="submit"
-              >确认提交</el-button
-            >
-            <el-button
-              type="primary"
-              v-show="checkstate == 10 || checkstate == 20"
-              @click="Issue"
-              >下发</el-button
-            >
-            <el-button type="primary" v-show="checkstate == 9" @click="send"
-              >退回</el-button
-            >
-            <el-button type="primary" v-show="checkstate == 8" @click="reject"
-              >驳回</el-button
-            >
+            <el-button type="primary" icon="el-icon-finished">确认提交</el-button>
+            <el-button type="primary">下发</el-button>
           </slot>
         </div>
       </div>
@@ -807,10 +874,7 @@
         >
           <el-form ref="form" label-width="90px">
             <el-form-item label="文件标题：">
-              <el-input
-                v-model="filetitle"
-                placeholder="请输入文件标题"
-              ></el-input>
+              <el-input v-model="filetitle" placeholder="请输入文件标题"></el-input>
             </el-form-item>
             <el-form-item label="文件描述：">
               <el-input
@@ -859,51 +923,18 @@
   </div>
 </template>
 <script>
-import service from "@/service";
 import Look from "../components/Look";
-import qss from "@/service/qs";
-import qs from "qs";
+
 export default {
+<<<<<<< HEAD
   props: { operationsdata: "", },
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
   components: {
     Look,
   },
   data() {
     return {
-      duplicate: "", //抄送部门
-      rejectreson: "", //驳回原因
-      sendreson: "", //退回原因
-      reasons: "", //事实及理由
-      Handling: "", //处理意见
-      note: "", //情况说明
-      date: "", //约定日期
-      liable: "", //责任人
-      liablelist: [], //责任人列表
-      type: "", //投诉类别
-      typelist: "", //投诉类别列表
-      degree: "", //责任度
-      degreelist: [], //责任度列表
-      agentname: "", //经办人姓名
-      agentphone: "", //经办人联系方式
-      treatment: "", // 诊疗经过
-      response: "", //针对性答复
-      needtime: "", //输入天数
-      issue: "", //下发科室
-      issuelist: [], //科室列表
-      Kaizen: "", //持续改进
-      Kaizenlist: [], //科室列表
-      duty: "", //责任科室
-      dutylist: [], //责任科室列表
-      facts: "", //主要事实
-      focus: "", //争议焦点
-      analysis: "", //根因分析
-      loss: "", //经济损失
-      responsibility: "", //责任意见
-      measures: "", //管理措施
-      rectification: "", //整改措施
-      preliminary: "", //初步意见
-      checkstate: "请选择", //选中状态
-      statelist: [], //状态列表
       drawer: false,
       uploadfile: "", //上传附件
       filedescribe: "", //文件描述
@@ -917,10 +948,11 @@ export default {
       options: [
         //员工列表
         {
-          value: "1",
-          lable: "终止",
+          value: 1,
+          value: 1,
         },
       ],
+<<<<<<< HEAD
       filebeforename: "",
       fileLists: [], //已上传成功的附件列表
       file: {}, //单次上传文件
@@ -1427,6 +1459,41 @@ export default {
         });
       }
     },
+=======
+      filelist: [
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
+
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
+      ],
+    };
+  },
+  methods: {
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
     handleClose() {
       this.dialogVisibless = false;
     },
@@ -1455,6 +1522,7 @@ export default {
       }
     },
   },
+<<<<<<< HEAD
   created() {
     var id = sessionStorage.getItem("uid"); //当前登录人id 1 医务处  2 科室三  4 科室二
     // console.log(id)
@@ -1483,6 +1551,9 @@ export default {
       this.options = res.Party;
     });
   },
+=======
+  created() {},
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
 };
 </script>
 <style scoped>

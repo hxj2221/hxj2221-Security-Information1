@@ -70,23 +70,6 @@
   text-align: right;
   margin-right: 30px;
 }
-.Complaints-content{
-  width: 100%;
-}
-.Complaints-content .cell{
-    color: #000000;
-    /* background-color: #c2c5f6; */
-}
-.Complaints-content .el-button--small{
-    color: #666ee8;
-}
-.Complaints-content .el-table__header{
-    background-color: #c2c5f6;
-}
-.Complaints-content .el-table__header-wrapper{
-  background-color: #c2c5f6;
-}
-.Complaints-content el-table-column{
-  background-color: #c2c5f6;
-  
+.Complaints-screen{
+
 }

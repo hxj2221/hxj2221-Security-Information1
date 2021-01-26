@@ -18,6 +18,7 @@
           @click="exportcom()"
           >导出</el-button
         >
+<<<<<<< HEAD
 
         <div slot="column">
           <el-table-column fixed="right" label="操作" width="150%">
@@ -33,6 +34,26 @@
               >
             </template>
           </el-table-column>
+=======
+        <div slot="table">
+          <Table>
+            <div slot="column">
+              <el-table-column fixed="right" label="操作" width="150%">
+                <template slot-scope="scope">
+                  <el-button type="text" size="small" @click="looks(scope.row)"
+                    >查看</el-button
+                  >
+                  <el-button type="text" size="small" @click="record(scope.row)"
+                    >医患记录</el-button
+                  >
+                  <el-button type="text" size="small" @click="handle(scope.row)"
+                    >操作</el-button
+                  >
+                </template>
+              </el-table-column>
+            </div>
+          </Table>
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
         </div>
       </Complaintslist>
       <!-- 添加投诉 -->
@@ -118,7 +139,11 @@
         </div>
       </Addcom>
       <!-- 查看 -->
+<<<<<<< HEAD
       <Look v-show="look" :datas="datas">
+=======
+      <Look v-show="look">
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
         <el-button
           type="primary"
           icon="el-icon-printer"
@@ -137,10 +162,14 @@
           >返回</el-button
         >
       </Look>
+<<<<<<< HEAD
       <Operation
         v-show="operations"
         :operationsdata="operationsdata"
       >
+=======
+      <Operation v-show="operations">
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
         <div slot="records">
           <el-button
             type="primary"
@@ -150,6 +179,7 @@
             >医患记录</el-button
           >
         </div>
+<<<<<<< HEAD
         <div slot="detail">
           <el-button
             type="primary"
@@ -160,6 +190,8 @@
             >投诉详情</el-button
           >
         </div>
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
         <div slot="back">
           <el-button
             type="primary"
@@ -170,6 +202,7 @@
             >返回</el-button
           >
         </div>
+<<<<<<< HEAD
         <div slot="drawer">
           <el-drawer
             title="快捷查看"
@@ -190,6 +223,8 @@
             </ul>
           </el-drawer>
         </div>
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
       </Operation>
     </div>
   </div>
@@ -199,26 +234,38 @@
 import Complaintslist from "../H-Complaints/components/complaintslist";
 import Addcom from "../H-Complaints/components/addcom";
 import Look from "../H-Complaints/components/Look";
+import Read from "../H-Complaints/components/read";
 import Conserve from "../H-Complaints/components/conserve";
 import Table from "../H-Complaints/components/Tables";
 import Operation from "../H-Complaints/components/operation";
 // 添加投诉
 import service from "@/service/index";
+
 export default {
+<<<<<<< HEAD
   components: { Complaintslist, Addcom, Look, Conserve, Table, Operation },
   inject: ["reload"],
   data() {
     return {
       drawer: false,
       operationsdata: {},
+=======
+  components: { Complaintslist, Addcom, Look, Read, Conserve, Table, Operation },
+
+  data() {
+    return {
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
       list: true,
       add: false,
       look: false,
       dialogVisible: false, //弹窗显示
       agree: "",
       operations: false,
+<<<<<<< HEAD
       s: [],
       datas: [],
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
     };
   },
 
@@ -230,6 +277,7 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = true;
+<<<<<<< HEAD
       this.operationsdata = index;
       console.log(this.operationsdata);
       service.ComDetails(index.D_I_Number).then((res) => {
@@ -238,9 +286,11 @@ export default {
         //  console.log(this.datas)
        
       });
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
     },
     records(index) {
-      // console.log(index);
+      console.log(index);
       //跳转到医患记录
       this.$router.push("/Connect");
     },
@@ -258,16 +308,19 @@ export default {
     },
     // 查看详情
     looks(index) {
-      // console.log(index);
+      console.log(index);
       this.list = false;
       this.add = false;
       this.look = true;
       this.operations = false;
+<<<<<<< HEAD
       service.ComDetails(index.D_I_Number).then((res) => {
         console.log(res);
         this.datas = res;
         console.log(index);
       });
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
     },
     // 添加页面保存
     keepform() {
@@ -278,7 +331,7 @@ export default {
     },
     // 打印
     stamp() {
-      // console.log(1);
+      console.log(1);
     },
     // 返回
     backss() {
@@ -286,7 +339,10 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = false;
+<<<<<<< HEAD
       this.reload()
+=======
+>>>>>>> ecf3788304fcae81a992fdbafde4cd4735b33142
     },
     // 添加投诉
     addcomsss() {
@@ -298,7 +354,7 @@ export default {
     },
     // 导出事件
     exportcom() {
-      // console.log(1);
+      console.log(1);
     },
     // 搜索事件
   },

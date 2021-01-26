@@ -84,7 +84,7 @@ export default {
 
   methods: {
     handle(row) {
-      // console.log(row);
+      console.log(row);
     },
     // 设置表头颜色
     getRowClass({ rowIndex }) {
@@ -97,13 +97,13 @@ export default {
   },
   created() {
      service.ComList({},1,9,8).then((res) => {
-        // console.log(res);
+        console.log(res);
         this.tableData=res.data
         res.data.forEach(element => {
           var index=element.Complaint_Time.indexOf('T');
-          // console.log(index);
+          console.log(index);
           element.Complaint_Time=element.Complaint_Time.substring(0,index);
-          // console.log(element.Complaint_Time);
+          console.log(element.Complaint_Time);
         });
 
       });

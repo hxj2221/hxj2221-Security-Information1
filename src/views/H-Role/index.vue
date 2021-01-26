@@ -2,131 +2,147 @@
   <div>
     <div class="rolealBg" v-if="rolevue">
       <headpow></headpow>
-      <!-- 搜索 -->
       <div class="roleIptsech">
         <el-input
-          v-model="search"
+          v-model="name"
           class="roleNameIpt"
           placeholder="请输入内容"
         ></el-input>
-        <el-button class="staffNamesch" icon="el-icon-search">搜索</el-button>
+        <el-button @click="Search" class="staffNamesch" icon="el-icon-search">搜索</el-button>
       </div>
-      <!-- 表格 -->
-      <div class="roleTable">
-        <el-table
-          :data="tables"
-          tooltip-effect="dark"
-          :header-cell-style="{ background: '#C2C5F6' }"
-          :cell-style="{ background: '#fff' }"
+      <el-table
+        :data="tables"
+        style="width: 90%; margin-left: 5%"
+        :header-cell-style="{ background: '#C2C5F6' }"
+        :cell-style="{ background: '#fff' }"
+      >
+        <el-table-column label="序号" prop="R_ID" >
+        </el-table-column>
+        <el-table-column prop="R_Number" label="角色编号"> </el-table-column>
+        <el-table-column prop="R_Name" label="角色名称"> </el-table-column>
+        <el-table-column prop="Count" label="员工数量"> </el-table-column>
+        <el-table-column prop="U_Name" label="创建人员"></el-table-column>
+        <el-table-column prop="R_Creat_Time" label="创建时间"></el-table-column>
+        <el-table-column label="角色状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.R_State"
+              :active-value="0"
+              :inactive-value="1"
+              active-color="#02538C"
+              inactive-color="#B9B9B9"
+              @change="changeSwitch($event, scope.row)"
+            />
+          </template>
+          ></el-table-column
         >
-          <el-table-column label="序号" type="index" :index="indexMethod">
-          </el-table-column>
-          <el-table-column prop="number" label="角色编号"> </el-table-column>
-          <el-table-column prop="title" label="角色名称"> </el-table-column>
-          <el-table-column prop="number" label="员工数量"> </el-table-column>
-          <el-table-column prop="user.name" label="创建人员"></el-table-column>
 
-          <el-table-column
-            prop="create_time"
-            label="创建时间"
-          ></el-table-column>
-          <el-table-column label="角色状态">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.status"
-                :active-value="1"
-                :inactive-value="0"
-                active-color="#02538C"
-                inactive-color="#B9B9B9"
-                @change="changeSwitch($event, scope.row, scope.row.id)"
-              />
-            </template>
-            ></el-table-column
-          >
-
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button
-                class="roleEdit"
-                size="mini"
-                @click="handleEdit(scope.row.id)"
-                >编辑</el-button
-              >
-              <el-button
-                class="roleDel"
-                size="mini"
-                type="danger"
-                @click="delrole(scope.row.id)"
-                >删除</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-
-      <!-- 分页 -->
-      <div class="rolepag">
-        <div class="block">
-          <el-pagination
-            :current-page="currentPage"
-            :page-sizes="[8, 10, 20]"
-            :page-size="8"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tables.length"
-          >
-          </el-pagination>
-        </div>
-      </div>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              class="roleEdit"
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)"
+              >编辑</el-button
+            >
+            <el-button
+              class="roleDel"
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, tables)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        class="rolePag"
+        layout="total, prev, pager, next, jumper"
+        :total="tables.length"
+      >
+      </el-pagination>
     </div>
     <!-- 新增-->
     <addrole v-show="addrole"></addrole>
     <!-- 编辑 -->
-    <editrole v-show="editshow" :editchid="childedit"></editrole>
+    <el-dialog
+      title="编辑"
+      :visible.sync="editFormVisible"
+      :close-on-click-modal="true"
+      :append-to-body="true"
+    >
+      <!--editForm表单提交的数据-->
+      <el-form :model="editForm" label-width="80px" ref="editForm">
+        <el-form-item prop="rolejobNum" label="角色编号" width="100">
+          <el-input
+            v-model="editForm.rolejobNum"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="roleName" label="角色名称" width="120">
+          <el-input v-model="editForm.roleName" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="roleName" label="员工数量" width="120">
+          <el-input
+            v-model="editForm.rolenumber"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="roleCreapeo" label="创建人员" width="120">
+          <el-input
+            v-model="editForm.roleCreapeo"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import headpow from "../component/power";
 import addrole from "./component/addrole";
-import editrole from "./component/editrole";
-import service from "@/service/index";
+
+import qs from 'qs'
+import service from '@/service/index'
 export default {
-  components: { headpow, addrole, editrole },
-  inject: ["reload"],
+  components: { headpow, addrole },
   data() {
     return {
       rolevue: true,
       addrole: false,
-      editshow: false,
-      tables: [],
       currentRow: [], //选中的值
-      dormitory: [],
-      search: "",
-      childedit: [],
-      currentPage: 1,
+      editFormVisible: false, //设置默认弹出框  为false
+      editForm: {
+        rolejobNum: "",
+        rolenumber: "",
+        roleName: "",
+        roleCreapeo: "",
+      },
+      tables: [],//列表
+      name:'',
     };
   },
   created() {
-    service.rolelist().then((res) => {
-      console.log(res.data);
-      this.tables = res.data;
-    });
-  },
-  computed: {
-    // 搜索
-    // tables() {
-    //   const search = this.search;
-    //   if (search) {
-    //     return this.dormitory.filter((data) => {
-    //       return Object.keys(data).some((key) => {
-    //         return String(data[key]).toLowerCase().indexOf(search) > -1;
-    //       });
-    //     });
-    //   }
-    //   return this.dormitory;
-    // },
+    let params={
+      name:this.name
+    }
+    service.RoleList(params).then(res=>{
+      console.log(res)
+      this.tables=res.data
+    })
   },
   methods: {
+    // 搜索
+    Search(){
+      let params={
+      name:this.name
+    }
+    service.RoleList(params).then(res=>{
+      console.log(res)
+      this.tables=res.data
+    })
+    },
     // 新增
     fathpowadd() {
       this.rolevue = false;
@@ -136,76 +152,59 @@ export default {
     fathroleyes() {
       setTimeout(() => {
         this.addrole = false;
-        this.editshow = false;
         this.rolevue = true;
       }, 3000);
     },
     // 子取消
     fathroleno() {
       this.addrole = false;
-      this.editshow = false;
       this.rolevue = true;
     },
     // switch开关
-    changeSwitch(val, row, id) {
-      let data = {
-        id: id,
-        status: row.status,
-      };
-      console.log(data);
-      service.rolestatus(data).then((res) => {
-        console.log(res);
-      });
-      console.log(row.status);
-      if (row.status == 1) {
+    changeSwitch(val, row) {
+      console.log(row);
+      let params={
+        R_ID:row.R_ID,
+        R_Information_Change:4
+      }
+      service.RoleState(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if (res.msg == '启用成功') {
         this.$message({
           type: "success",
           message: "员工启用成功",
         });
-      } else {
+      } else if(res.msg == '角色下存在员工！'){
+        this.$message({
+          type: "success",
+          message: "角色存在员工",
+        });
+      }
+      else {
         this.$message({
           type: "success",
           message: "员工停用成功",
         });
       }
+      })
+      
     },
     // 编辑
-    handleEdit(id) {
-      // this.editFormVisible = true;
-      // this.editForm = Object.assign({}, row); //重点
-      this.rolevue = false;
-      this.editshow = true;
-      console.log(id);
-      let param = {
-        id: id,
-      };
-      console.log(param);
-      service.roleedit(param).then((res) => {
-        console.log(res);
-        this.childedit = res;
-        console.log(this.childedit);
-      });
-    },
-    // 删除角色
-    delrole(id) {
-      console.log(id);
-      let param = {
-        id: id,
-      };
-      console.log(param);
-      service.roledel(param).then((res) => {
-        console.log(res);
-        this.reload();
-      });
-    },
-    // 序号
-    indexMethod(index) {
-      return index * 1;
+    handleEdit(index, row) {
+      this.editFormVisible = true;
+      this.editForm = Object.assign({}, row); //重点
+      console.log(this.editForm);
     },
     // 删除
     handleDelete(index, row) {
-      console.log(index, row);
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+console.log(row[index].R_ID)
+      let params={
+        R_ID:row[index].R_ID
+      }
+      service.RoleDel(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(res.msg=="删除成功"){
+           this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -223,6 +222,10 @@ export default {
             message: "已取消删除",
           });
         });
+        }
+        
+      })
+      
     },
   },
 };

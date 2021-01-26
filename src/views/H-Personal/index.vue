@@ -12,6 +12,7 @@
                 type="input"
                 autosize
                 placeholder="10001"
+                v-model="U_Number"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -21,7 +22,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personNameipt"
+                v-model="U_Name"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -29,26 +30,9 @@
             <el-form-item label="年龄">
               <el-input
                 placeholder="请输入内容"
-                v-model="personAgeipt"
+                v-model="U_Age"
                 class=""
               >
-                <template slot="append">
-                  <el-select
-                    type="input"
-                    style="width: 90px"
-                    autosize
-                    v-model="personagesel"
-                    placeholder="请选择"
-                  >
-                    <el-option
-                      v-for="item in optionages"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
-                </template>
               </el-input>
             </el-form-item>
           </el-col>
@@ -58,7 +42,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="persongensel"
+                v-model="U_Gender"
                 style="margin-top: 40px"
                 placeholder="请选择"
               >
@@ -80,7 +64,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personPhoneipt"
+                v-model="U_Phone"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -90,7 +74,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personEmailipt"
+                v-model="U_Mailbox"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -100,7 +84,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personCardipt"
+                v-model="U_IDNumber"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -110,7 +94,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personPositioniPt"
+                v-model="R_ID"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -120,19 +104,18 @@
             <el-form-item label="地址" required>
               <el-cascader
                 class="dialog-input-text"
-                type="input"
-                autosize
                 style="
                   display: block;
                   position: relative;
                   font-size: 14px;
                   line-height: 40px;
                 "
+                size="large"
                 :options="options"
-                v-model="selectedOptions"
+                v-model="U_Address"
                 @change="handleChange"
-                :separator="' '"
-              ></el-cascader>
+              >
+              </el-cascader>
             </el-form-item>
           </el-col>
           <el-col :span="16">
@@ -141,7 +124,7 @@
                 class="dialog-input-text"
                 type="input"
                 autosize
-                v-model="personaddreiPt"
+                v-model="U_Detailed_Address"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -160,34 +143,44 @@
 
 <script>
 import userthre from "../component/userthre";
-import { changeinfor } from "../../network/H-person";
-import { personxq } from "../../network/H-person";
 import options from "./coun.js";
+import service from '@/service/index'
 import qs from "qs";
+
+//地址级联选择器
+
+import {
+  provinceAndCityData,
+  regionData,
+  provinceAndCityDataPlus,
+  regionDataPlus,
+  CodeToText,
+  TextToCode,
+} from "element-china-area-data";
 export default {
   components: { userthre },
-
   data() {
     return {
+      options: regionData,
       pageTitle: "个人信息",
-      personNameipt: "",
-      personAgeipt: "",
-      personagesel: "",
-      persongensel: "",
-      personPhoneipt: "",
-      personEmailipt: "",
-      personCardipt: "",
-      personPositioniPt: "",
-      selectedOptions: [],
-      options: options,
-      personaddreiPt: "",
+      U_Number:'',//员工编号
+      U_Name: "",//员工姓名
+      U_Age: "",//年龄
+      U_Gender: "",//性别
+      U_Phone: "",//手机号
+      U_Mailbox: "",//邮箱
+      U_IDNumber: "",//证件号
+      R_ID: "",//职位
+      U_Address: [],//地址
+      U_Detailed_Address: "",//详细地址
+      U_ID:12,//用户id
       optiongen: [
         {
-          value: "选项1",
+          value: "1",
           label: "男",
         },
         {
-          value: "选项2",
+          value: "0",
           label: "女",
         },
         {
@@ -195,67 +188,48 @@ export default {
           label: "未知",
         },
       ],
-      optionages: [
-        {
-          value: "选项1",
-          label: "岁",
-        },
-        {
-          value: "选项2",
-          label: "月",
-        },
-        {
-          value: "选项3",
-          label: "天",
-        },
-      ],
     };
   },
   // 个人信息数据
   created() {
-    let data = {};
-    personxq().then((res) => {
-      console.log(res);
-      this.personNameipt = res.data.data.name;
-      this.personAgeipt = res.data.data.age;
-      this.personPhoneipt = res.data.data.phone;
-      this.personEmailipt = res.data.data.email;
-      this.personCardipt = res.data.data.cardnumber;
-      this.personPositioniPt = res.data.data.position;
-      this.personaddreiPt = res.data.data.eraddress;
-      this.persongensel = res.data.data.sex;
-    });
+    service.PerInfo(this.U_ID).then(res=>{
+      console.log(res)
+      this.U_Number=res.list[0].U_IDNumber;
+      this.U_Name=res.list[0].U_Name;
+      this.U_Age=res.list[0].U_Age;
+      this.U_Gender=res.list[0].U_Gender;
+      this.U_Phone=res.list[0].U_Phone;
+      this.U_Mailbox=res.list[0].U_Mailbox;
+      this.U_IDNumber=res.list[0].U_IDNumber;
+      this.R_ID=res.list[0].R_ID;
+      this.U_Address=res.list[0].U_Address;
+      this.U_Detailed_Address=res.list[0].U_Detailed_Address
+    })
   },
   methods: {
     personsave() {
-      console.log(
-        this.personNameipt +
-          this.personAgeipt +
-          this.personagesel +
-          this.persongensel +
-          this.personPhoneipt +
-          this.personEmailipt +
-          this.personCardipt +
-          this.personPositioniPt +
-          this.selectedOptions +
-          this.personaddreiPt
-      );
-      let data = {
-        name: this.personNameipt,
-        age: this.personAgeipt + this.personAgeel,
-        sex: this.persongensel,
-        phone: this.personPhoneipt,
-        email: this.personEmailipt,
-        cardnumber: this.personCardipt,
-        position: this.personPositioniPt,
-        address: this.personaddreiPt,
-      };
-      changeinfor(qs.stringify(data)).then((result) => {
-        console.log(data);
-      });
+      let params={
+        U_ID:this.U_ID,
+        U_Number:this.U_Number,
+        U_Name:this.U_Name,
+        U_Age:this.U_Age,
+        U_Gender:this.U_Gender,
+        U_Phone:this.U_Phone,
+        U_Mailbox:this.U_Mailbox,
+        U_IDNumber:this.personCardipt,
+        R_ID:this.R_ID,
+        U_Address:this.U_Address,
+        U_Detailed_Address:this.U_Detailed_Address
+      }
+      service.PerInfoSure(qs.stringify(params)).then(res=>{
+        console.log(res)
+        if(res.result==true){
+          this.$message('修改成功');
+        }
+      })
     },
-    handleChange(value) {
-      console.log(value);
+    handleChange(){
+
     },
   },
 };
