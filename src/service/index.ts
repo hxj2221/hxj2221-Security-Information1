@@ -11,16 +11,28 @@ export default {
   login: async (data: Object) => {
     return await service.post(`${baseUrl}api/login/LoginCheck`, data).then(res => res).catch(err => err)
   },
-    //验证码
-    VerificationCode: async () => {
-      return await service.get(`${baseUrl}api/VerificationCode/VerificationCode`,).then(res => res).catch(err => err)
-    },
+  //上传附件
+  uploadfilebase: async (data: Object) => {
+    return await service.post(`${baseUrl}api/T_Enclosure/Upload`, data).then(res => res).catch(err => err)
+  },
+  //附件列表
+  upfilelist: async (number: any, state: number) => {
+    return await service.get(`${baseUrl}api/T_Enclosure/Gerlist`, { params: { number, state } }).then(res => res).catch(err => err)
+  },
+  //删除附件
+  deleteupfilelist: async (data: any) => {
+    return await service.post(`${baseUrl}api/T_Enclosure/DeleteFile`, data).then(res => res).catch(err => err)
+  },
+  //验证码
+  VerificationCode: async () => {
+    return await service.get(`${baseUrl}api/VerificationCode/VerificationCode`,).then(res => res).catch(err => err)
+  },
   //记住密码
   remember: async () => {
     return await service.get(`${baseUrl}api/login/CheckdCookie`,).then(res => res).catch(err => err)
   },
-   //退出
-   Exit: async () => {
+  //退出
+  Exit: async () => {
     return await service.get(`${baseUrl}api/login/Exit`,).then(res => res).catch(err => err)
   },
   // 投诉列表
@@ -175,27 +187,27 @@ export default {
     return await service.post(`${baseUrl}api/T_Role/DeleteRole`, params).then(res => res).catch(err => err)
   },
   // 权限列表
-powList: async (params:any) => {
-  return await service.get(`${baseUrl}api/T_Permission/Qurey`,params).then(res => res).catch(err => err)
-},
-// 权限删除
- powDel: async (params:object) => {
-  return await service.get(`${baseUrl}api/T_Permission/Delete`,{params}).then(res => res).catch(err => err)
-},
-// 权限编辑
-powEdit: async (params:object) => {
-  return await service.get(`${baseUrl}api/T_Permission/GetOne`,{params}).then(res => res).catch(err => err)
-},
-// 权限保存
-powEditsave: async (params:any) => {
-  return await service.post(`${baseUrl}api/T_Permission/Update`,params).then(res => res).catch(err => err)
-},
-// 权限添加
-powAdd: async (params:any) => {
-  return await service.get(`${baseUrl}api/T_Permission/GetPname`,params).then(res => res).catch(err => err)
-},
-// 权限添加保存
-savepower: async (params:object) => {
-  return await service.post(`${baseUrl}api/T_Permission/Insert`,params).then(res => res).catch(err => err)
-},
+  powList: async (params: any) => {
+    return await service.get(`${baseUrl}api/T_Permission/Qurey`, params).then(res => res).catch(err => err)
+  },
+  // 权限删除
+  powDel: async (params: object) => {
+    return await service.get(`${baseUrl}api/T_Permission/Delete`, { params }).then(res => res).catch(err => err)
+  },
+  // 权限编辑
+  powEdit: async (params: object) => {
+    return await service.get(`${baseUrl}api/T_Permission/GetOne`, { params }).then(res => res).catch(err => err)
+  },
+  // 权限保存
+  powEditsave: async (params: any) => {
+    return await service.post(`${baseUrl}api/T_Permission/Update`, params).then(res => res).catch(err => err)
+  },
+  // 权限添加
+  powAdd: async (params: any) => {
+    return await service.get(`${baseUrl}api/T_Permission/GetPname`, params).then(res => res).catch(err => err)
+  },
+  // 权限添加保存
+  savepower: async (params: object) => {
+    return await service.post(`${baseUrl}api/T_Permission/Insert`, params).then(res => res).catch(err => err)
+  },
 }

@@ -258,6 +258,7 @@
                     <el-select
                       v-model="checkstate"
                       placeholder="请选择事件状态"
+                      @change="changes"
                     >
                       <el-option
                         v-for="item in statelist"
@@ -307,6 +308,7 @@
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
                       <span class="label">选择下发科室:</span>
+                      <br />
                       <el-cascader
                         style="margin-left: 10px"
                         ref="cascader"
@@ -345,6 +347,7 @@
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
                       <span class="label">选择抄送部门:</span>
+                      <br />
                       <el-cascader
                         style="margin-left: 10px"
                         ref="cascader"
@@ -395,6 +398,7 @@
                   checkstate == 17 ||
                   checkstate == 18 ||
                   checkstate == 19 ||
+                  checkstate == 21 ||
                   checkstate == 14
                 "
               >
@@ -482,6 +486,7 @@
                   <el-col :span="6" :push="1"
                     ><div class="grid-content bg-purple">
                       <span class="label">选择下发科室:</span>
+                      <br />
                       <el-cascader
                         style="margin-left: 10px"
                         ref="cascader"
@@ -496,6 +501,19 @@
                         v-model="Kaizen"
                         clearable
                       ></el-cascader></div
+                  ></el-col>
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="6" :push="1"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">约定日期:</span>
+                      <el-input
+                        style="margin-left: 10px"
+                        type="input"
+                        v-model="date"
+                        placeholder="请填写"
+                        autosize
+                      ></el-input></div
                   ></el-col>
                 </el-row>
               </div>
@@ -699,67 +717,44 @@
                   </div></el-col
                 >
               </el-row>
-              <el-row
-                type="flex"
-                class="row-bg"
-                justify="space-between"
-                v-show="filelist.length !== 0"
-              >
+              <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="22" :push="1"
                   ><div class="grid-content bg-purple">
                     <el-table
-                      :data="filelist"
+                      :data="fileLists"
                       style="width: 100%"
                       :header-cell-style="getRowClass"
                     >
-                      <el-table-column prop="ID" label="ID" width="width">
+                      <el-table-column prop="E_Number" label="ID" width="width">
                       </el-table-column>
                       <el-table-column
-                        prop="filename"
+                        prop="E_Name"
                         label="文件名"
                         width="width"
                       >
                       </el-table-column>
                       <el-table-column
-                        prop="describe"
+                        prop="E_Describe"
                         label="描述"
                         width="width"
                       >
                       </el-table-column>
                       <el-table-column
-                        prop="filesize"
+                        prop="E_Size"
                         label="文件大小"
                         width="width"
                       >
                       </el-table-column>
-                      <el-table-column
-                        prop="uptime"
-                        label="更新时间"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="filetype"
-                        label="文件类型"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="uploader"
-                        label="上传人员"
-                        width="width"
-                      >
-                      </el-table-column>
+
                       <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
                           <slot name="fileoper">
                             <el-button
-                              @click="handleClick(scope.row)"
                               type="text"
                               size="small"
-                              >下载</el-button
+                              @click="deletes(scope.row)"
+                              >删除</el-button
                             >
-                            <el-button type="text" size="small">删除</el-button>
                           </slot>
                         </template>
                       </el-table-column>
@@ -801,8 +796,6 @@
           </slot>
         </div>
       </div>
-      <!-- 投诉详情 -->
-
       <!-- 上传文件弹窗 -->
       <div class="upfile">
         <el-dialog
@@ -827,20 +820,38 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="上传附件：" class="uploadfile">
-              <el-input
-                v-model="uploadfile"
-                type="file"
-                style="border: none"
-                class="uploadfile"
-              ></el-input>
+              <el-upload
+                action="http://bt1.wlqqlp.com:8081/"
+                class="upload-demo"
+                :on-change="handleChange"
+                :on-exceed="exceed"
+                :limit="1"
+                :file-list="listsss"
+                :disabled="filetitle == '' || filedescribe == '' ? true : false"
+                :multiple="false"
+                :auto-upload="false"
+              >
+                <el-button
+                  slot="trigger"
+                  size="small"
+                  type="primary"
+                  :disabled="
+                    filetitle == '' || filedescribe == '' ? true : false
+                  "
+                  >选取文件</el-button
+                >
+                <div slot="tip" class="el-upload__tip">
+                  一次只能上传一个文件，且不超过5MB
+                </div>
+              </el-upload>
             </el-form-item>
           </el-form>
-          <el-button type="primary" icon="el-icon-upload" class="uploadfiles"
+          <!-- <el-button type="primary" icon="el-icon-upload" class="uploadfiles"
             >上传文件</el-button
-          >
+          > -->
           <span slot="footer" class="dialog-footer">
             <el-button @click="upfiles = false">取 消</el-button>
-            <el-button type="primary" @click="upfiles = false">确 定</el-button>
+            <el-button type="primary" @click="upfilesubmit">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -853,7 +864,7 @@ import Look from "../components/Look";
 import qss from "@/service/qs";
 import qs from "qs";
 export default {
-  props: { operationsdata: "" },
+  props: { operationsdata: "", },
   components: {
     Look,
   },
@@ -910,20 +921,153 @@ export default {
           lable: "终止",
         },
       ],
-      filelist: [
-        // {
-        //   ID: "FJ20201229001",
-        //   filename: "调解书",
-        //   describe: "这是一个调解书",
-        //   filesize: "32.23kb",
-        //   uptime: "2020-12-02 20:56:37",
-        //   filetype: "jpg",
-        //   uploader: "王丽",
-        // }
-      ],
+      filebeforename: "",
+      fileLists: [], //已上传成功的附件列表
+      file: {}, //单次上传文件
+      listsss: [], //未上传文件列表
     };
   },
   methods: {
+    //删除附件
+    deletes(index) {
+      // console.log(index);
+      let params = {
+        E_Number: index.E_Number, //文件编号
+      };
+      service.deleteupfilelist(qs.stringify(params)).then((res) => {
+        console.log(res)
+        if (res.code == 0) {
+          // this.$router.go(0);
+          this.$message({
+            message: res.msg,
+            type: "succsess",
+            duration: 1000,
+          });
+          service.upfilelist(this.$parent.operationsdata.D_I_Number,this.checkstate).then((res) => {
+              this.fileLists = res.data;
+              console.log(res);
+            });
+        }
+      });
+      console.log(index.E_Number);
+    },
+    //当选中状态改变时
+    changes() {
+      //附件
+      if (
+        this.checkstate == 11 ||
+        this.checkstate == 12 ||
+        this.checkstate == 14 ||
+        this.checkstate == 15 ||
+        this.checkstate == 17 ||
+        this.checkstate == 18 ||
+        this.checkstate == 19 ||
+        this.checkstate == 22 ||
+        this.checkstate == 23
+      ) {
+        service
+          .upfilelist(this.$parent.operationsdata.D_I_Number, this.checkstate)
+          .then((res) => {
+            this.fileLists = res.data;
+            // console.log(this.fileLists);
+          });
+      }
+    },
+    //关闭上传文件弹窗
+    Close() {
+      this.listsss = [];
+      this.upfiles = false;
+      this.filedescribe = "";
+      this.filetitle = "";
+      this.file = {};
+    },
+    //超出限制的上传文件提示
+    exceed() {
+      this.$message({
+        message: "单次只能上传一个文件",
+        type: "error",
+        duration: 1000,
+      });
+    },
+    //删除上传文件
+    handleRemove(file, fileList) {
+      console.log(file);
+      console.log(fileList);
+    },
+    // 上传附件
+    upfilesubmit() {
+      console.log(this.file);
+      this.getBase64(this.file.raw).then((resBase64) => {
+        let base64file = resBase64.split(",")[1]; //直接拿到base64信息
+        // console.log(base64file)
+        let params = {
+          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
+          base64_file: base64file, //文件
+          E_Name: this.filetitle, //文件标题
+          E_Describe: this.filedescribe, //文件描述
+          filebeforename: this.filebeforename, //文件名
+          E_Upload_Personnel: sessionStorage.getItem("uid"), //当前登录人id
+          D_M_ID: this.checkstate, //当前选中状态
+        };
+        console.log(params);
+        service
+          .uploadfilebase(qs.stringify(params))
+          .then((res) => {
+            if (res.code == 0) {
+              // this.$router.go(0);
+              this.$message({
+                message: res.msg,
+                type: "succsess",
+                duration: 1000,
+              });
+              this.listsss = []; //上传附件弹窗内显示的选择文件列表
+              this.upfiles = false;
+              this.upfilesss = true; //文件列表
+              this.filedescribe = "";
+              this.filetitle = "";
+              this.file = {};
+              service
+                .upfilelist(this.$parent.operationsdata.D_I_Number, this.checkstate)
+                .then((res) => {
+                  this.fileLists = res.data;
+                  console.log(this.fileLists);
+                });
+            } else {
+              this.$message({
+                message: res.msg,
+                type: "error",
+                duration: 2000,
+              });
+            }
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      });
+    },
+    getBase64(file) {
+      return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        let fileResult = "";
+        reader.readAsDataURL(file); //开始转
+        reader.onload = function () {
+          fileResult = reader.result;
+        }; //转 失败
+        reader.onerror = function (error) {
+          reject(error);
+        }; //转 结束  咱就 resolve 出去
+        reader.onloadend = function () {
+          resolve(fileResult);
+        };
+      });
+    },
+    //上传附件
+    handleChange(file, fileList) {
+      //    file.name=this.filetitle
+      // file.filedescribe=this.filedescribe
+      this.filebeforename = file.name;
+      this.file = fileList[0];
+    },
     //确认提交
     submit() {
       //改进完成（科室）
@@ -944,13 +1088,13 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
           }
         });
-      } //科室调查
+      } //科室反馈
       else if (this.$parent.operationsdata.E_S_ID == 10) {
         let params = {
           D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
@@ -965,7 +1109,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -989,7 +1133,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1012,7 +1156,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1033,7 +1177,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1055,7 +1199,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1078,7 +1222,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1098,7 +1242,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1119,7 +1263,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1128,7 +1272,7 @@ export default {
       }
       //已结束
       else if (this.checkstate == 24) {
-         let duty = "";
+        let duty = "";
         if (this.duty !== "") {
           duty = this.duty.map((x) => {
             return x[1];
@@ -1150,7 +1294,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1168,7 +1312,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "操作失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1193,7 +1337,7 @@ export default {
           this.$router.go(0);
         } else {
           this.$message({
-            message: "退回失败",
+            message: res.msg,
             type: "error",
             duration: 1000,
           });
@@ -1216,7 +1360,7 @@ export default {
           this.$router.go(0);
         } else {
           this.$message({
-            message: "驳回失败",
+            message: res.msg,
             type: "error",
             duration: 1000,
           });
@@ -1248,13 +1392,13 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "下发失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
           }
         });
-      }//持续改进（科室） 
+      } //持续改进（科室）
       else if (this.checkstate == 20) {
         let Kaizen = "";
         if (this.Kaizen !== "") {
@@ -1275,7 +1419,7 @@ export default {
             this.$router.go(0);
           } else {
             this.$message({
-              message: "下发失败",
+              message: res.msg,
               type: "error",
               duration: 1000,
             });
@@ -1323,14 +1467,17 @@ export default {
     service.AddManaged(3).then((res) => {
       this.typelist = res.data;
     });
+
     service.AddManaged(9).then((res) => {
       this.degreelist = res.data;
     });
+    //获取当前科室下拉框
     service.AddDepartment().then((res) => {
       this.issuelist = res.data;
       this.dutylist = res.data;
       this.Kaizenlist = res.data;
     });
+    //获取当事人、责任人下拉框
     service.Party(id).then((res) => {
       this.liablelist = res.Party;
       this.options = res.Party;

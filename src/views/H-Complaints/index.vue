@@ -18,27 +18,26 @@
           @click="exportcom()"
           >导出</el-button
         >
-   
-            <div slot="column">
-              <el-table-column fixed="right" label="操作" width="150%">
-                <template slot-scope="scope">
-                  <el-button type="text" size="small" @click="looks(scope.row)"
-                    >查看</el-button
-                  >
-                  <el-button type="text" size="small" @click="record(scope.row)"
-                    >医患记录</el-button
-                  >
-                  <el-button type="text" size="small" @click="handle(scope.row)"
-                    >操作</el-button
-                  >
-                </template>
-              </el-table-column>
-            </div>
-        
+
+        <div slot="column">
+          <el-table-column fixed="right" label="操作" width="150%">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="looks(scope.row)"
+                >查看</el-button
+              >
+              <el-button type="text" size="small" @click="record(scope.row)"
+                >医患记录</el-button
+              >
+              <el-button type="text" size="small" @click="handle(scope.row)"
+                >操作</el-button
+              >
+            </template>
+          </el-table-column>
+        </div>
       </Complaintslist>
       <!-- 添加投诉 -->
       <Addcom v-show="add">
-        <div slot="dialog" class="dialog"> 
+        <div slot="dialog" class="dialog">
           <el-dialog
             title="医疗投诉处理基本要求"
             :visible.sync="dialogVisible"
@@ -85,13 +84,17 @@
                 "
               ></p>
             </div>
-            <el-checkbox v-model="agree" class="check">阅读并同意以上说明</el-checkbox>
+            <el-checkbox v-model="agree" class="check"
+              >阅读并同意以上说明</el-checkbox
+            >
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">继续</el-button>
+              <el-button type="primary" @click="dialogVisible = false"
+                >继续</el-button
+              >
             </span>
           </el-dialog>
-        </div> 
+        </div>
         <div slot="conserve">
           <!-- <Conserve>
             <el-button
@@ -115,7 +118,7 @@
         </div>
       </Addcom>
       <!-- 查看 -->
-      <Look v-show="look" :datas='datas'>
+      <Look v-show="look" :datas="datas">
         <el-button
           type="primary"
           icon="el-icon-printer"
@@ -134,21 +137,28 @@
           >返回</el-button
         >
       </Look>
-      <Operation v-show="operations" :operationsdata='operationsdata'>
+      <Operation
+        v-show="operations"
+        :operationsdata="operationsdata"
+      >
         <div slot="records">
-          <el-button type="primary" icon="el-icon-edit" class="records" @click="records()"
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            class="records"
+            @click="records()"
             >医患记录</el-button
           >
         </div>
         <div slot="detail">
-            <el-button
-              type="primary"
-              icon="el-icon-s-order"
-              class="detail"
-              slot="reference"
-              @click="drawer = true"
-              >投诉详情</el-button
-            >
+          <el-button
+            type="primary"
+            icon="el-icon-s-order"
+            class="detail"
+            slot="reference"
+            @click="drawer = true"
+            >投诉详情</el-button
+          >
         </div>
         <div slot="back">
           <el-button
@@ -161,21 +171,24 @@
           >
         </div>
         <div slot="drawer">
-            <el-drawer
-        title="快捷查看"
-        :visible.sync="drawer"
-        :with-header="false"
-        size="59%"
-      >
-        <ul
-          class="infinite-list"
-          style="overflow: auto; height: 870px; texr-aligin: center"
-        >
-          <Look style="width: 100%; margin: 0px 0px; padding: 0px 0px" :datas='datas'>
-            <div slot="title"></div>
-          </Look>
-        </ul>
-      </el-drawer>
+          <el-drawer
+            title="快捷查看"
+            :visible.sync="drawer"
+            :with-header="false"
+            size="59%"
+          >
+            <ul
+              class="infinite-list"
+              style="overflow: auto; height: 870px; texr-aligin: center"
+            >
+              <Look
+                style="width: 100%; margin: 0px 0px; padding: 0px 0px"
+                :datas="datas"
+              >
+                <div slot="title"></div>
+              </Look>
+            </ul>
+          </el-drawer>
         </div>
       </Operation>
     </div>
@@ -193,19 +206,19 @@ import Operation from "../H-Complaints/components/operation";
 import service from "@/service/index";
 export default {
   components: { Complaintslist, Addcom, Look, Conserve, Table, Operation },
-    inject: ["reload"],
+  inject: ["reload"],
   data() {
     return {
-      drawer:false,
-      operationsdata:{},
+      drawer: false,
+      operationsdata: {},
       list: true,
       add: false,
       look: false,
       dialogVisible: false, //弹窗显示
       agree: "",
       operations: false,
-      s:[],
-      datas:[]
+      s: [],
+      datas: [],
     };
   },
 
@@ -217,13 +230,14 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = true;
-      this.operationsdata=index
-      console.log(this.operationsdata)
-         service.ComDetails(index.D_I_Number).then(res=>{
-        console.log(res)
-       this.datas=res
-      //  console.log(this.datas)
-      })
+      this.operationsdata = index;
+      console.log(this.operationsdata);
+      service.ComDetails(index.D_I_Number).then((res) => {
+        console.log(res);
+        this.datas = res;
+        //  console.log(this.datas)
+       
+      });
     },
     records(index) {
       // console.log(index);
@@ -249,11 +263,11 @@ export default {
       this.add = false;
       this.look = true;
       this.operations = false;
-      service.ComDetails(index.D_I_Number).then(res=>{
-        console.log(res)
-       this.datas=res
-       console.log(index)
-      })
+      service.ComDetails(index.D_I_Number).then((res) => {
+        console.log(res);
+        this.datas = res;
+        console.log(index);
+      });
     },
     // 添加页面保存
     keepform() {
@@ -272,7 +286,7 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = false;
-      this.$router.go(0)//刷新还有问题后期改
+      this.reload()
     },
     // 添加投诉
     addcomsss() {
@@ -281,7 +295,6 @@ export default {
       this.look = false;
       this.dialogVisible = true;
       this.operations = false;
-     
     },
     // 导出事件
     exportcom() {

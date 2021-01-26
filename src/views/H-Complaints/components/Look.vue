@@ -363,11 +363,11 @@
                     ></div>
                     <div class="file clearfix">
                       <div
-                        v-for="itemsss in itemss[0].E_Name"
+                        v-for="(itemsss,key) in itemss[0].E_Name"
                         :key="itemsss.E_Name"
                       >
                         <span class="filename">{{ itemsss.E_Name }}</span>
-                        <span class="filedetaile">查看</span>
+                         <span class="filedetaile" @click="down(itemsss,key)"> <a href="#" style=" text-decoration: none;  color: #666ee8;">下载</a></span>
                       </div>
                     </div>
                   </div>
@@ -662,7 +662,7 @@
                     <div class="file clearfix">
                       <div v-for="itemsssss in it.E_Name" :key="itemsssss.E_Name" >
                         <span class="filename">{{ itemsssss.E_Name }}</span>
-                        <span class="filedetaile">查看</span>
+                        <span class="filedetaile"> <a href="#" style=" text-decoration: none;  color: #666ee8;">下载</a></span>
                       </div>
                     </div>
                   </div>
@@ -950,7 +950,15 @@ export default {
       data: [],
     };
   },
-  methods: {},
+  methods: {
+    down(itemsss,key){
+      console.log(itemsss,key)
+      let params={
+        E_Number:itemsss.E_Number//附件编号
+      }
+      
+    }
+  },
   created() {
     // this.data=datas
   },
