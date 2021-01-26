@@ -18,7 +18,8 @@
           @click="exportcom()"
           >导出</el-button
         >
-   
+        <div slot="table">
+          <Table>
             <div slot="column">
               <el-table-column fixed="right" label="操作" width="150%">
                 <template slot-scope="scope">
@@ -34,7 +35,8 @@
                 </template>
               </el-table-column>
             </div>
-        
+          </Table>
+        </div>
       </Complaintslist>
       <!-- 添加投诉 -->
       <Addcom v-show="add">
@@ -115,7 +117,7 @@
         </div>
       </Addcom>
       <!-- 查看 -->
-      <Look v-show="look" :datas='datas'>
+      <Look v-show="look">
         <el-button
           type="primary"
           icon="el-icon-printer"
@@ -134,21 +136,11 @@
           >返回</el-button
         >
       </Look>
-      <Operation v-show="operations" :operationsdata='operationsdata'>
+      <Operation v-show="operations">
         <div slot="records">
           <el-button type="primary" icon="el-icon-edit" class="records" @click="records()"
             >医患记录</el-button
           >
-        </div>
-        <div slot="detail">
-            <el-button
-              type="primary"
-              icon="el-icon-s-order"
-              class="detail"
-              slot="reference"
-              @click="drawer = true"
-              >投诉详情</el-button
-            >
         </div>
         <div slot="back">
           <el-button
@@ -160,23 +152,6 @@
             >返回</el-button
           >
         </div>
-        <div slot="drawer">
-            <el-drawer
-        title="快捷查看"
-        :visible.sync="drawer"
-        :with-header="false"
-        size="59%"
-      >
-        <ul
-          class="infinite-list"
-          style="overflow: auto; height: 870px; texr-aligin: center"
-        >
-          <Look style="width: 100%; margin: 0px 0px; padding: 0px 0px" :datas='datas'>
-            <div slot="title"></div>
-          </Look>
-        </ul>
-      </el-drawer>
-        </div>
       </Operation>
     </div>
   </div>
@@ -186,26 +161,24 @@
 import Complaintslist from "../H-Complaints/components/complaintslist";
 import Addcom from "../H-Complaints/components/addcom";
 import Look from "../H-Complaints/components/Look";
+import Read from "../H-Complaints/components/read";
 import Conserve from "../H-Complaints/components/conserve";
 import Table from "../H-Complaints/components/Tables";
 import Operation from "../H-Complaints/components/operation";
 // 添加投诉
 import service from "@/service/index";
+
 export default {
-  components: { Complaintslist, Addcom, Look, Conserve, Table, Operation },
-    inject: ["reload"],
+  components: { Complaintslist, Addcom, Look, Read, Conserve, Table, Operation },
+
   data() {
     return {
-      drawer:false,
-      operationsdata:{},
       list: true,
       add: false,
       look: false,
       dialogVisible: false, //弹窗显示
       agree: "",
       operations: false,
-      s:[],
-      datas:[]
     };
   },
 
@@ -217,16 +190,9 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = true;
-      this.operationsdata=index
-      console.log(this.operationsdata)
-         service.ComDetails(index.D_I_Number).then(res=>{
-        console.log(res)
-       this.datas=res
-      //  console.log(this.datas)
-      })
     },
     records(index) {
-      // console.log(index);
+      console.log(index);
       //跳转到医患记录
       this.$router.push("/Connect");
     },
@@ -244,16 +210,11 @@ export default {
     },
     // 查看详情
     looks(index) {
-      // console.log(index);
+      console.log(index);
       this.list = false;
       this.add = false;
       this.look = true;
       this.operations = false;
-      service.ComDetails(index.D_I_Number).then(res=>{
-        console.log(res)
-       this.datas=res
-       console.log(index)
-      })
     },
     // 添加页面保存
     keepform() {
@@ -264,7 +225,7 @@ export default {
     },
     // 打印
     stamp() {
-      // console.log(1);
+      console.log(1);
     },
     // 返回
     backss() {
@@ -272,7 +233,6 @@ export default {
       this.add = false;
       this.look = false;
       this.operations = false;
-      this.$router.go(0)//刷新还有问题后期改
     },
     // 添加投诉
     addcomsss() {
@@ -285,7 +245,7 @@ export default {
     },
     // 导出事件
     exportcom() {
-      // console.log(1);
+      console.log(1);
     },
     // 搜索事件
   },

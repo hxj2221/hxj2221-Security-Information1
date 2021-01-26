@@ -1,16 +1,8 @@
 <template>
   <div>
     <div class="look">
-    
-      <!-- 打印内容 -->
-      <slot name="content">
-        <div
-          class="look-content"
-          v-for="item in datas"
-          :key="item.ComplaintsInformation[0].D_I_Number"
-        >
-          <slot name="title">
-        <div class="look-top">
+      <slot name="title">
+       <div class="look-top">
           <span>投诉详情-调查中</span>
           <div>
             <slot name="stamp">
@@ -32,15 +24,17 @@
             </slot>
           </div>
           <div
-            style="
-              border-bottom: 2px solid #cccccc70;
-              width: 100%;
-              height: 30px;
-            "
+            style="border-bottom: 2px solid #cccccc70; width: 100%; height: 30px"
           ></div>
         </div>
-        <br/> <br/> <br/> <br/>
       </slot>
+      <!-- 打印内容 -->
+      <slot name="content">
+        <div
+          class="look-content"
+          v-for="item in data"
+          :key="item.BasicInformation[0].D_I_Number"
+        >
           <div class="look-content-title">
             <span>投诉事件调查表</span>
           </div>
@@ -50,14 +44,11 @@
               <el-col :span="6"
                 ><div class="grid-content bg-purple">
                   <span
-                    ><span>医院名称：</span
-                    >{{ item.BasicInformation[0].H_Name }}</span
+                    ><span>医院名称：</span>{{ item.BasicInformation[0].H_Name }}</span
                   >
                 </div></el-col
               >
-              <el-col :span="6"
-                ><div class="grid-content bg-purple-light"></div
-              ></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
               <el-col :span="6"
                 ><div class="grid-content bg-purple">
                   <span
@@ -76,9 +67,7 @@
                   >
                 </div></el-col
               >
-              <el-col :span="6"
-                ><div class="grid-content bg-purple-light"></div
-              ></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
               <el-col :span="6"
                 ><div class="grid-content bg-purple">
                   <span
@@ -97,9 +86,7 @@
                   >
                 </div></el-col
               >
-              <el-col :span="6"
-                ><div class="grid-content bg-purple-light"></div
-              ></el-col>
+              <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
               <el-col :span="6"
                 ><div class="grid-content bg-purple">
                   <span
@@ -112,42 +99,181 @@
             <hr />
           </div>
           <div class="look-content-box">
-            <!-- 科室改进 -->
-            <div v-if="item.Kaizen.length !== 0">
+            <!-- 审批节点 -->
+             <div class="box-Information">
+              <div class="box-top">
+                <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="3" :push="2"
+                    ><div class="grid-content bg-purple">
+                      <span><b>科室自查</b></span>
+                    </div></el-col>
+                     <el-col :span="3"
+                    ><div class="grid-content bg-purple-light"></div
+                  ></el-col>
+                  <el-col :span="9" :pull="1"
+                    ><div class="grid-content bg-purple">
+                      <span><b>操作时间：</b>2021-1-4 00:00:00</span>
+                    </div></el-col>
+                </el-row>
+              </div>
+              <div class="box-content">
+                <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">审批部门：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">医务处</span>
+                    </div></el-col
+                  >
+                </el-row>
+                <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">负责人：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">魏忠文/13955551234</span>
+                    </div></el-col
+                  >
+                </el-row>
+                <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">状态修改：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value"
+                        >已受理→科室自查
+                        </span>
+                    </div></el-col
+                  >
+                </el-row>
+                 <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">下发科室：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value"
+                        >血液科</span>
+                    </div></el-col
+                  >
+                </el-row>
+                 <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">主要事实：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value"
+                        >无</span>
+                    </div></el-col
+                  >
+                </el-row>
+                 <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">争议焦点：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value"
+                        >无</span>
+                    </div></el-col
+                  >
+                </el-row>
+                <div
+                  style="
+                    border-bottom: 0.5px solid #797979;
+                    width: 100%;
+                  "
+                ></div>
+                  <div class="file clearfix">
+                    <div>
+                      <span class="filename">文件名</span>
+                      <span class="filedetaile">查看</span>
+                    </div>
+                     <div>
+                      <span class="filename">文件名</span>
+                      <span class="filedetaile">查看</span>
+                    </div>
+                     <div>
+                      <span class="filename">文件名</span>
+                      <span class="filedetaile">查看</span>
+                    </div>
+                  </div>
+              </div>
+              <hr />
+            </div>
+            <!-- 科室调查 -->
+            <div
+              class="box-contents"
+              v-for="item in data[0].GetLoop"
+              :key="item.Participating[0].Num"
+            >
+              <div class="box-top">
+                <el-row type="flex" class="row-bg" justify="space-between">
+                  <el-col :span="3" :push="2">
+                    <div class="grid-content bg-purple">
+                      <span
+                        ><b>{{ item.Participating[0].Num }}</b></span
+                      >
+                    </div></el-col
+                  >
+                  <el-col :span="3"
+                    ><div class="grid-content bg-purple-light"></div
+                  ></el-col>
+                  <el-col :span="9" :pull="1"
+                    ><div class="grid-content bg-purple">
+                      <span><b>下发时间：</b>{{ item.Participating[0].Time }}</span>
+                    </div></el-col
+                  >
+                </el-row>
+              </div>
+              <div class="box-content clearfix">
+                <el-row>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple">
+                      <span class="label">参与调查科室：</span>
+                    </div></el-col
+                  >
+                  <el-col :span="20">
+                    <div class="grid-content bg-purple-light">
+                      <span>{{ item.Participating[0].D_Names }}</span>
+                    </div></el-col
+                  >
+                </el-row>
+              </div>
               <div
-                class="box-Information"
-                v-for="items in item.Kaizen"
-                :key="items.K_Time"
+                v-for="items in item.Participating"
+                :key="items.SurveyProgress[0].D_Name"
               >
-                <div class="box-top">
-                  <el-row type="flex" class="row-bg" justify="space-between">
-                    <el-col :span="3" :push="2">
-                      <div class="grid-content bg-purple">
-                        <span
-                          ><b>改进完成【{{ items.K_Identification }}】</b></span
-                        >
-                      </div></el-col
-                    >
-                    <el-col :span="3"
-                      ><div class="grid-content bg-purple-light"></div
-                    ></el-col>
-                    <el-col :span="9" :pull="1"
-                      ><div class="grid-content bg-purple">
-                        <span><b>完成时间：</b>{{ items.K_Time }}</span>
-                      </div></el-col
-                    >
-                  </el-row>
-                </div>
-                <div class="box-content">
+                <div
+                  class="box-content-child clearfix"
+                  v-for="itemss in items.SurveyProgress"
+                  :key="itemss[0].D_Name"
+                >
                   <el-row>
                     <el-col :span="4"
                       ><div class="grid-content bg-purple">
-                        <span class="label">改进科室：</span>
+                        <span class="label">调查科室：</span>
                       </div></el-col
                     >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.D_Name }}</span>
+                    <el-col :span="20">
+                      <div class="grid-content bg-purple-light">
+                        <span class="value">{{ itemss[0].D_Name }}</span>
                       </div></el-col
                     >
                   </el-row>
@@ -157,520 +283,59 @@
                         <span class="label">负责人：</span>
                       </div></el-col
                     >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.PersonLiable }}</span>
+                    <el-col :span="20">
+                      <div class="grid-content bg-purple-light">
+                        <span class="value">{{ itemss[0].Department_Head }}</span>
                       </div></el-col
                     >
                   </el-row>
                   <el-row>
                     <el-col :span="4"
                       ><div class="grid-content bg-purple">
-                        <span class="label">责任人：</span>
+                        <span class="label">当事员工：</span>
                       </div></el-col
                     >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.Person }}</span>
-                      </div></el-col
-                    >
-                  </el-row>
-                  <el-row>
-                    <el-col :span="4"
-                      ><div class="grid-content bg-purple">
-                        <span class="label">根因分析：</span>
-                      </div></el-col
-                    >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.K_Analysis }}</span>
+                    <el-col :span="20">
+                      <div class="grid-content bg-purple-light">
+                        <span class="value">{{ itemss[0].StaffInvolved }}</span>
                       </div></el-col
                     >
                   </el-row>
                   <el-row>
                     <el-col :span="4"
                       ><div class="grid-content bg-purple">
-                        <span class="label">责任意见：</span>
+                        <span class="label">反馈时间：</span>
                       </div></el-col
                     >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.K_Opinion }}</span>
+                    <el-col :span="20">
+                      <div class="grid-content bg-purple-light">
+                        <span class="value">{{ itemss[0].EndTime }}</span>
                       </div></el-col
                     >
                   </el-row>
                   <el-row>
                     <el-col :span="4"
                       ><div class="grid-content bg-purple">
-                        <span class="label">整改措施：</span>
+                        <span class="label">诊疗经过：</span>
                       </div></el-col
                     >
-                    <el-col :span="20"
-                      ><div class="grid-content bg-purple-light">
-                        <span class="value">{{ items.K_Measures }}</span>
+                    <el-col :span="20">
+                      <div class="grid-content bg-purple-light">
+                        <span class="value">{{ itemss[0].I_Reply }}</span>
                       </div></el-col
                     >
                   </el-row>
-                  <div
-                    style="
-                      border-bottom: 0.5px solid #797979;
-                      width: 100%;
-                      margin-bottom: 20px;
-                    "
-                  ></div>
-                </div>
-                <hr />
-              </div>
-            </div>
-            <!-- 科室调查 -->
-            <div
-              class="box-contents"
-              v-show="items.length !== 0"
-              v-for="items in item.GetLoop"
-              :key="items"
-            >
-              <div class="box-top" v-if="items.Participating.length !== 0">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="3" :push="2">
-                    <div class="grid-content bg-purple">
-                      <span
-                        ><b>{{ items.Participating[0].Num }}</b></span
-                      >
-                    </div></el-col
-                  >
-                  <el-col :span="3"
-                    ><div class="grid-content bg-purple-light"></div
-                  ></el-col>
-                  <el-col :span="9" :pull="1"
-                    ><div class="grid-content bg-purple">
-                      <span
-                        ><b>下发时间：</b
-                        >{{ items.Participating[0].Time }}</span
-                      >
-                    </div></el-col
-                  >
-                </el-row>
-              </div>
-              <div
-                class="box-content clearfix"
-                v-if="items.Participating.length !== 0"
-              >
-                <el-row>
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">参与调查科室：</span>
-                    </div></el-col
-                  >
-                  <el-col :span="20">
-                    <div class="grid-content bg-purple-light">
-                      <span>{{ items.Participating[0].D_Names }}</span>
-                    </div></el-col
-                  >
-                </el-row>
-              </div>
-              <div v-if="items.Participating.length !== 0">
-                <div
-                  v-for="itemss in items.Participating[0].SurveyProgress"
-                  :key="itemss[0].D_Name"
-                >
-                  <div class="box-content-child clearfix">
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">调查科室：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{ itemss[0].D_Name }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">负责人：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            itemss[0].Department_Head
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">当事员工：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            itemss[0].StaffInvolved
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">反馈时间：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            itemss[0].EndTime == "0001-01-01 00:00:00"
-                              ? "未反馈"
-                              : itemss[0].EndTime
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">诊疗经过：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            itemss[0].I_After == null ? "无" : itemss[0].I_After
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">针对性答复：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            itemss[0].I_Reply==null ? "无" : itemss[0].I_Reply
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <div
-                      style="border-bottom: 0.5px solid #797979; width: 100%"
-                    ></div>
-                    <div class="file clearfix">
-                      <div
-                        v-for="itemsss in itemss[0].E_Name"
-                        :key="itemsss.E_Name"
-                      >
-                        <span class="filename">{{ itemsss.E_Name }}</span>
-                        <span class="filedetaile">查看</span>
-                      </div>
+                  <div style="border-bottom: 0.5px solid #797979; width: 100%"></div>
+                  <div class="file clearfix">
+                    <div v-for="itemsss in itemss[0].E_Name" :key="itemsss._Name">
+                      <span class="filename">{{ itemsss.E_Name }}</span>
+                      <span class="filedetaile">查看</span>
                     </div>
                   </div>
                 </div>
-
-                <hr style="margin-top: 20px; margin-bottom: 20px" />
               </div>
-              <!-- 审批节点 -->
-              <div v-if="items.ApprovalDepartment">
-                <div
-                  class="box-Information"
-                  v-for="it in items.ApprovalDepartment"
-                  :key="it.Department"
-                >
-                  <div class="box-top">
-                    <el-row type="flex" class="row-bg" justify="space-between">
-                      <el-col :span="3" :push="2"
-                        ><div class="grid-content bg-purple">
-                          <span
-                            ><b>{{ it.Name }}</b></span
-                          >
-                        </div></el-col
-                      >
-                      <el-col :span="3"
-                        ><div class="grid-content bg-purple-light"></div
-                      ></el-col>
-                      <el-col :span="9" :pull="1"
-                        ><div class="grid-content bg-purple">
-                          <span><b>操作时间：</b>{{ it.Time }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                  </div>
-                  <div class="box-content">
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">审批部门：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Department }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">负责人：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Department_Head }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row>
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">状态修改：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.UpdateState }} </span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.D_Name">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">下发科室：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.D_Name }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.Ag_Name">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">经办人信息：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Ag_Name }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-
-                    <el-row v-if="it.Duty !== '' && it.Duty !== null">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">责任科室：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Duty }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.Complaint_D_M_ID">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">投诉类别：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Complaint_Type }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.Degree">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">责任度：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.Degree }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-
-                    <el-row
-                      v-if="it.A_Main_Facts !== '' && it.A_Main_Facts !== null"
-                    >
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">主要事实：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20">
-                        <div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Main_Facts }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.A_Dispute !== '' && it.A_Dispute !== null">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">争议焦点：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Dispute }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row
-                      v-if="
-                        it.A_Preliminary_Comments !== '' &&
-                        it.A_Preliminary_Comments !== null
-                      "
-                    >
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">初步意见：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{
-                            it.A_Preliminary_Comments
-                          }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row
-                      v-if="
-                        it.A_Appointment_Date !== '' &&
-                        it.A_Appointment_Date !== null
-                      "
-                    >
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">约定日期：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Appointment_Date }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row
-                      v-if="
-                        it.A_Information_Note !== '' &&
-                        it.A_Information_Note !== null
-                      "
-                    >
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">情况说明：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Information_Note }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.A_Opinion !== '' && it.A_Opinion !== null">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">处理意见：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Opinion }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.A_Reason !== '' && it.A_Reason !== null">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">事实及理由：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Reason }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row
-                      v-if="it.A_Measures !== '' && it.A_Measures !== null"
-                    >
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">管理措施：</span>
-                        </div></el-col
-                      >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Measures }}</span>
-                        </div></el-col
-                      >
-                    </el-row>
-                    <el-row v-if="it.A_Economic_Loss !== '' && it.A_Economic_Loss !== null">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">直接经济损失：</span>
-                        </div></el-col>
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.A_Economic_Loss }}</span>
-                        </div></el-col>
-                    </el-row>
-                    <el-row v-if="it.A_Reject_Reasons">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">驳回原因：</span>
-                        </div></el-col>
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{it.A_Reject_Reasons}}</span>
-                        </div></el-col>
-                    </el-row>
-                    <el-row v-if="it.A_Return_Reasons">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">退回原因：</span>
-                        </div></el-col>
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{it.A_Return_Reasons}}</span>
-                        </div></el-col>
-                    </el-row>
-                    <el-row v-if="it.CCDepartment">
-                      <el-col :span="4"
-                        ><div class="grid-content bg-purple">
-                          <span class="label">抄送部门：</span>
-                        </div></el-col >
-                      <el-col :span="20"
-                        ><div class="grid-content bg-purple-light">
-                          <span class="value">{{ it.CCDepartment }}</span>
-                        </div></el-col>
-                    </el-row>
-
-                    <div style="border-bottom: 0.5px solid #797979; width: 100%" ></div>
-                    <div class="file clearfix">
-                      <div v-for="itemsssss in it.E_Name" :key="itemsssss.E_Name" >
-                        <span class="filename">{{ itemsssss.E_Name }}</span>
-                        <span class="filedetaile">查看</span>
-                      </div>
-                    </div>
-                  </div>
-                  <hr />
-                </div>
-              </div>
+              <hr />
             </div>
-
             <!-- 投诉人信息 -->
             <div class="box-Information">
               <div class="box-top">
@@ -687,29 +352,42 @@
                   <el-col :span="4"
                     ><div class="grid-content bg-purple">
                       <span class="label">投诉人姓名：</span>
-                    </div></el-col >
-                  <el-col :span="4" ><div class="grid-content bg-purple-light">
-                      <span class="value">{{item.ComplaintsInformation[0].C_I_Name}}</span>
-                    </div></el-col>
-                  <el-col :span="4">
-                    <div class="grid-content bg-purple"></div>
-                    <span class="label">性别：</span></el-col>
-                  <el-col :span="4">
-                    <div class="grid-content bg-purple-light">
-                      <span class="value">{{item.ComplaintsInformation[0].C_I_Gender }}</span>
-                    </div></el-col>
-                  <el-col :span="4" ><div class="grid-content bg-purple"></div>
-                    <span class="label">年龄：</span></el-col>
-                  <el-col :span="4"><div class="grid-content bg-purple-light">
-                      <span class="value" >{{ item.ComplaintsInformation[0].C_I_Age }}岁</span>
-                    </div></el-col>
+                    </div></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">张大牛</span>
+                    </div></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple"></div>
+                    <span class="label">性别：</span></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">男</span>
+                    </div></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple"></div>
+                    <span class="label">年龄：</span></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">65</span>
+                    </div></el-col
+                  >
                 </el-row>
                 <el-row>
-                  <el-col :span="4" ><div class="grid-content bg-purple"></div>
-                    <span class="label">投诉方式：</span></el-col>
-                  <el-col :span="4"><div class="grid-content bg-purple-light">
-                      <span class="value">{{item.ComplaintsInformation[0].Complaint_Mode}}</span>
-                    </div></el-col>
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple"></div>
+                    <span class="label">投诉方式：</span></el-col
+                  >
+                  <el-col :span="4"
+                    ><div class="grid-content bg-purple-light">
+                      <span class="value">上级转办</span>
+                    </div></el-col
+                  >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple">
                       <span class="label">与患者关系：</span>
@@ -717,9 +395,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].D_M_Name
-                      }}</span>
+                      <span class="value">本人</span>
                     </div></el-col
                   >
                   <el-col :span="4"
@@ -728,25 +404,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value"
-                        >{{ item.ComplaintsInformation[0].Reply_Time }}日</span
-                      >
-                    </div></el-col
-                  >
-                </el-row>
-                <el-row>
-                  <el-col :span="4"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">经办人信息：</span>
-                    </div></el-col
-                  >
-                  <el-col :span="20"
-                    ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].Ag_Name == null
-                          ? "无"
-                          : item.ComplaintsInformation[0].Ag_Name
-                      }}</span>
+                      <span class="value">3日</span>
                     </div></el-col
                   >
                 </el-row>
@@ -758,9 +416,7 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].D_Name
-                      }}</span>
+                      <span class="value">心血管内科、血液科</span>
                     </div></el-col
                   >
                 </el-row>
@@ -772,9 +428,7 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].Complaint_Type
-                      }}</span>
+                      <span class="value">费用、医院制度、服务态度</span>
                     </div></el-col
                   >
                 </el-row>
@@ -786,9 +440,9 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        item.ComplaintsInformation[0].Complain_Reason
-                      }}</span>
+                      <span class="value"
+                        >患者后颈部疼痛伴四肢无力8小时急诊入院，5小时后接入手术室行手术治疗，现患者截瘫，家属认为要求办理转院手续</span
+                      >
                     </div></el-col
                   >
                 </el-row>
@@ -800,15 +454,10 @@
                   "
                 ></div>
               </div>
-              <hr v-show="item.PatientInformation.length !== 0" />
+              <hr />
             </div>
             <!-- 患者信息 -->
-            <div
-              class="box-Information"
-              v-show="item.PatientInformation.length !== 0"
-              v-for="itemssss in item.PatientInformation"
-              :key="itemssss.P_I_Name"
-            >
+            <div class="box-Information">
               <div class="box-top">
                 <el-row type="flex" class="row-bg" justify="space-between">
                   <el-col :span="3" :push="2"
@@ -827,7 +476,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.P_I_Name }}</span>
+                      <span class="value">张大牛</span>
                     </div></el-col
                   >
                   <el-col :span="4"
@@ -836,7 +485,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.P_I_Gender }}</span>
+                      <span class="value">男</span>
                     </div></el-col
                   >
                   <el-col :span="4"
@@ -845,7 +494,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.P_I_Age }}</span>
+                      <span class="value">65</span>
                     </div></el-col
                   >
                 </el-row>
@@ -857,7 +506,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.Insurance_Type }}</span>
+                      <span class="value">社保</span>
                     </div></el-col
                   >
                   <el-col :span="4"
@@ -866,7 +515,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.P_I_Phone }}</span>
+                      <span class="value">13898761234</span>
                     </div></el-col
                   >
                   <el-col :span="4"
@@ -875,9 +524,7 @@
                   >
                   <el-col :span="4"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        itemssss.Hz_Diagnosis_Time
-                      }}</span>
+                      <span class="value">2020-11-15</span>
                     </div></el-col
                   >
                 </el-row>
@@ -889,7 +536,7 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.Inpatient_Area }}</span>
+                      <span class="value">普通外科一病区</span>
                     </div></el-col
                   >
                 </el-row>
@@ -901,7 +548,7 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{ itemssss.Ward_Number }}</span>
+                      <span class="value">306</span>
                     </div></el-col
                   >
                 </el-row>
@@ -913,9 +560,9 @@
                   >
                   <el-col :span="20"
                     ><div class="grid-content bg-purple-light">
-                      <span class="value">{{
-                        itemssss.Hz_Outpatient_Diagnosis
-                      }}</span>
+                      <span class="value"
+                        >患者后颈部疼痛伴四肢无力8小时急诊入院，5小时后接入手术室行手术治疗，现患者截瘫，家属认为要求办理转院手续</span
+                      >
                     </div></el-col
                   >
                 </el-row>
@@ -936,24 +583,189 @@
 </template>
 <script>
 export default {
-  components: {},
-  // props:['datas'],
-  props: {
-    datas: Array,
-    // datas:function() {
-    //   return this.sortKey(this.datas, "Time");
-    // }
-  },
-
+  components: {
+      },
   data() {
     return {
-      data: [],
+      
+      data: [
+        {
+          GetLoop: [
+            {
+              Participating: [
+                {
+                  D_Names: "科室一、科室四",
+                  Num: "第1次科室调查",
+                  Time: "2020-12-29 00:00:00",
+                  SurveyProgress: [
+                    [
+                      {
+                        D_Name: "科室一",
+                        Department_Head: "李四/12345678921",
+                        StaffInvolved: "无",
+                        EndTime: "2020-01-01 00:00:00",
+                        I_After: "无",
+                        I_Reply: "无",
+                        E_Name: [
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                          {
+                            E_Number: "666666",
+                            E_Name: "附件六",
+                          },
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                        ],
+                      },
+                    ],
+                    [
+                      {
+                        D_Name: "科室四",
+                        Department_Head: "李四/1248787821",
+                        StaffInvolved: "无",
+                        EndTime: "2020-01-01 00:00:00",
+                        I_After: "1111",
+                        I_Reply: "1111",
+                        E_Name: [
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                          {
+                            E_Number: "666666",
+                            E_Name: "附件六",
+                          },
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                        ],
+                      },
+                    ],
+                  ],
+                },
+              ],
+              ApprovalDepartment: [
+                {
+                  Time: "2020-12-31 00:00:00",
+                  Department: "医务处",
+                  Department_Head: "王五/12345678921",
+                  UpdateState: "无→345",
+                  D_Name: "科室一、科室四",
+                  Complaint_Type: "456",
+                  Duty: "无",
+                  PersonLiable: "张三/科室一",
+                  CCDepartment: "无",
+                  A_Opinion: "审批意见意见意见意见",
+                  E_Name: [
+                    {
+                      E_Number: "55555",
+                      E_Name: "附件五",
+                    },
+                    {
+                      E_Number: "666666",
+                      E_Name: "附件六",
+                    },
+                    {
+                      E_Number: "55555",
+                      E_Name: "附件五",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              Participating: [
+                {
+                  D_Names: "科室五",
+                  Num: "第2次科室调查",
+                  Time: "2020-12-29 00:00:00",
+                  SurveyProgress: [
+                    [
+                      {
+                        D_Name: "科室五",
+                        Department_Head: "张三/12345678921",
+                        StaffInvolved: "无",
+                        EndTime: "2020-01-01 00:00:00",
+                        I_After: "4444",
+                        I_Reply: "4444",
+                        E_Name: [
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                          {
+                            E_Number: "666666",
+                            E_Name: "附件六",
+                          },
+                          {
+                            E_Number: "55555",
+                            E_Name: "附件五",
+                          },
+                        ],
+                      },
+                    ],
+                  ],
+                },
+              ],
+              ApprovalDepartment: [],
+            },
+          ],
+          BasicInformation: [
+            {
+              H_Name: "兰州大学第二医院",
+              D_I_Number: "YY12143254376587",
+              Complaint_Time: "2020-12-31",
+              Incident_Time: "2020-12-31",
+              Dispute_State: "纠纷",
+              Event_State: "科室自查",
+            },
+          ],
+          ComplaintsInformation: [
+            {
+              C_I_Name: "投诉人一号",
+              C_I_Gender: 0,
+              C_I_Age: 18,
+              Complaint_Mode: "345",
+              D_M_Name: "345",
+              Reply_Time: 3,
+              D_Name: "科室二、科室三",
+              Complaint_Type: "456",
+              Complain_Reason: "原因",
+            },
+          ],
+          PatientInformation: [
+            {
+              P_I_Name: "患者一号",
+              P_I_Gender: 0,
+              P_I_Age: 18,
+              Insurance_Type: 0,
+              P_I_Phone: 13445678945,
+              Hz_Diagnosis_Time: "2020-01-01 00:00:00",
+              Inpatient_Area: "病区",
+              Ward_Number: "病房",
+              Hz_Outpatient_Diagnosis: "诊断",
+              P_I_Medical_Card: "123465",
+            },
+          ],
+        },
+      ],
     };
   },
   methods: {},
-  created() {
-    // this.data=datas
-  },
+  created() {},
 };
 </script>
 <style scoped>

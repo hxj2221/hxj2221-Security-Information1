@@ -1,5 +1,5 @@
 <template>
-  <div class="addrole">
+  <div class="addstaffall">
     <div class="roleaddThre">
       <span class="roleaddSpan">新增角色信息</span>
       <div>
@@ -18,7 +18,6 @@
                 type="input"
                 autosize
                 placeholder="10001"
-                disabled
               ></el-input>
             </el-form-item>
           </el-col>
@@ -32,13 +31,12 @@
               ></el-input>
             </el-form-item>
           </el-col>
-
           <el-col :span="8">
             <el-form-item style="margin-top: 40px" label="角色状态">
               <el-switch
                 v-model="valuestatus"
                 :active-value="1"
-                :inactive-value="0"
+                :inactive-value="2"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
               >
@@ -76,41 +74,49 @@
       >
         权限分配
       </p>
-      <div class="roleFs">
-        <div class="H-edit">
-          <div
-            class="content"
-            v-for="item in powlist"
-            :key="item.id"
-            :label="item.id"
-          >
-            <div class="title">
-              <el-checkbox
-                :label="item.id"
-                v-model="fcheck"
-                @change="fcheckchange"
-                >{{ item.title }}</el-checkbox
+      <div class="roleF">
+        <table class="roleTab">
+          <tr style="background-color: #c2c5f6">
+            <td style="margin-left: 83px">
+              <input
+                type="checkbox"
+                id="all-checked"
+                :checked="isAllChecked()"
+                @change="changeAllChecked($event)"
+              /><span style="font-size: 14px; margin-left: 5px">模块</span>
+              <span style="font-size: 14px; margin-left: 42px">功能</span>
+            </td>
+          </tr>
+          <tr v-for="data in datas" :key="data.id">
+            <td class="roleTd">
+              <span style="font-size: 14px">
+                <input
+                  type="checkbox"
+                  value=""
+                  :id="data.listTitle"
+                  :checked="isTitleChecked(data)"
+                  @change="changeTitleChecked(data, $event)"
+                />
+                {{ data.listTitle }}
+              </span>
+
+              <span
+                v-for="item in data.name"
+                :key="item.id"
+                style="font-size: 14px; margin-left: 30px"
               >
-            </div>
-            <div class="power" v-for="v in item.son" :key="v.id" :label="v.id">
-              <el-checkbox
-                v-model="vcheck"
-                @change="vcheckchange"
-                :label="v.id"
-                class="tit"
-                >{{ v.title }}</el-checkbox
-              >
-              <el-checkbox-group v-model="checkList" @change="checkchange">
-                <el-checkbox
-                  v-for="(vv, index) in v.son"
-                  :key="index"
-                  :label="vv.id"
-                  >{{ vv.title }}</el-checkbox
-                >
-              </el-checkbox-group>
-            </div>
-          </div>
-        </div>
+                <input
+                  type="checkbox"
+                  :value="item"
+                  v-model="data.selected"
+                  :id="item.id"
+                  @click="changesonc(item)"
+                />
+                {{ item.name }}
+              </span>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
     <div style="margin-top: 100px">
@@ -125,13 +131,10 @@
       >
         查看权限
       </p>
-      <div
-        class="role_div"
-        style="width: 50%; text-align: left; margin: 20px 40px"
-      >
+      <div style="margin-left: 160px; margin-top: 40px; display: flex">
         <el-radio-group v-model="radio" @change="radiochange">
-          <el-radio :label="2">本科室</el-radio>
-          <el-radio :label="1">全部</el-radio>
+          <el-radio :label="3">本科室</el-radio>
+          <el-radio :label="6">全部</el-radio>
         </el-radio-group>
       </div>
     </div>
@@ -139,66 +142,191 @@
 </template>
 
 <script>
-import service from "@/service/index";
 export default {
-  inject: ["reload"],
   data() {
     return {
-      radio: 1,
+      radio: 3,
       rolecreate: "",
       roleNameipt: "",
       valuestatus: 1,
-      name: "", //权限名
-      checked: false, //标题
-      checkList: [],
-      fcheck: [],
-      vcheck: [],
-      dialogVisible: false,
-      powlist: [],
+      datas: [
+        {
+          listTitle: "模块1",
+          id: 1,
+          selected: [],
+          name: [
+            {
+              name: "功能11",
+              id: 11,
+              info: 0,
+            },
+            {
+              name: "功能12",
+              id: 12,
+              info: 0,
+            },
+            {
+              name: "功能13",
+              id: 13,
+              info: 0,
+            },
+            {
+              name: "功能14",
+              id: 14,
+              info: 0,
+            },
+            {
+              name: "功能15",
+              id: 15,
+              info: 0,
+            },
+          ],
+        },
+        {
+          listTitle: "模块2",
+          id: 2,
+          selected: [],
+          name: [
+            {
+              name: "功能21",
+              id: 21,
+              info: 0,
+            },
+            {
+              name: "功能22",
+              id: 22,
+              info: 0,
+            },
+            {
+              name: "功能23",
+              id: 23,
+              info: 0,
+            },
+            {
+              name: "功能24",
+              id: 24,
+              info: 0,
+            },
+            {
+              name: "功能25",
+              id: 25,
+              info: 0,
+            },
+          ],
+        },
+        {
+          listTitle: "模块3",
+          id: 3,
+          selected: [],
+          name: [
+            {
+              name: "功能31",
+              id: 31,
+              info: 0,
+            },
+            {
+              name: "功能32",
+              id: 32,
+              info: 0,
+            },
+            {
+              name: "功能33",
+              id: 33,
+              info: 0,
+            },
+            {
+              name: "功能34",
+              id: 34,
+              info: 0,
+            },
+            {
+              name: "功能35",
+              id: 35,
+              info: 0,
+            },
+          ],
+        },
+        {
+          listTitle: "模块4",
+          id: 4,
+          selected: [],
+          name: [
+            {
+              name: "功能41",
+              id: 41,
+              info: 0,
+            },
+            {
+              name: "功能42",
+              id: 42,
+              info: 0,
+            },
+            {
+              name: "功能43",
+              id: 43,
+              info: 0,
+            },
+            {
+              name: "功能44",
+              id: 44,
+              info: 0,
+            },
+            {
+              name: "功能45",
+              id: 45,
+              info: 0,
+            },
+          ],
+        },
+        {
+          listTitle: "模块5",
+          id: 5,
+          selected: [],
+          name: [
+            {
+              name: "功能51",
+              id: 51,
+              info: 0,
+            },
+            {
+              name: "功能52",
+              id: 52,
+              info: 0,
+            },
+            {
+              name: "功能53",
+              id: 53,
+              info: 0,
+            },
+            {
+              name: "功能54",
+              id: 54,
+              info: 0,
+            },
+            {
+              name: "功能55",
+              id: 55,
+              info: 0,
+            },
+          ],
+        },
+      ],
     };
   },
-  created() {
-    service.rolepowlist().then((res) => {
-      console.log(res);
-      this.powlist = res.data;
-      console.log(this.powlist);
-    });
-  },
   methods: {
-    checkchange() {
-      console.log(this.checkList);
-    },
-    vcheckchange() {
-      console.log(this.vcheck);
-    },
-    fcheckchange() {
-      console.log(this.fcheck);
-    },
     //   保存
     roleaddvueyes() {
-      let data = {
-        title: this.roleNameipt,
-        status: this.valuestatus,
-        describe: this.rolecreate,
-        rules: this.checkList + "," + this.vcheck + "," + this.fcheck,
-        data_rule: this.radio,
-      };
-      service.roleadd(data).then((res) => {
-        console.log(res);
-        if (res.code == "20010") {
-          const loading = this.$loading({
-            lock: true,
-            text: "保存中",
-            spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)",
-          });
-          setTimeout(() => {
-            loading.close();
-            this.reload();
-          }, 2000);
-          this.$parent.fathroleyes();
-        }
+      const loading = this.$loading({
+        lock: true,
+        text: "保存中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
       });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
+      console.log();
+      this.$parent.fathroleyes();
     },
     // 查看权限
     radiochange() {
@@ -208,8 +336,49 @@ export default {
     roleaddvueno() {
       this.$parent.fathroleno();
     },
+    //   模块功能
+    isTitleChecked(data) {
+      var _selected = data.selected;
+      var _name = data.name;
+      // 验证selected中是否含有全部的item的id 如果是 证明title要选中
+      return _name.every(function (item) {
+        return _selected.indexOf(item) != -1;
+      });
+    },
+    changeTitleChecked(data, event) {
+      if (event.target.checked === true) {
+        data.name.forEach(function (item) {
+          data.selected.indexOf(item) === -1 && data.selected.push(item);
+        });
+        console.log(data.name);
+      } else {
+        data.selected = [];
+      }
+    },
+    changeAllChecked(event) {
+      if (event.target.checked === true) {
+        this.datas.forEach(function (data) {
+          data.name.forEach(function (item) {
+            data.selected.indexOf(item) === -1 && data.selected.push(item);
+          });
+          console.log(data.id);
+        });
+      } else {
+        this.datas.forEach(function (data) {
+          data.selected = [];
+        });
+      }
+    },
+    isAllChecked() {
+      return this.datas.every(function (data) {
+        return data.selected.length === data.name.length;
+      });
+    },
     changesonc(e) {
       console.log(e);
+    },
+    jsmc() {
+      console.log(this.roleNameipt);
     },
   },
 };
@@ -217,57 +386,4 @@ export default {
 
 <style scoped>
 @import "addrole.css";
-* {
-  margin: 0;
-  padding: 0;
-}
-
-.H-edit {
-  background-color: rgb(255, 255, 255);
-  width: 100%;
-  min-height: 150px;
-  padding-top: 30px;
-  border-radius: 5px;
-  box-shadow: 1px 0 10px rgb(204, 204, 204);
-  text-align: left;
-}
-.H-edit .edit-top {
-  text-align: right;
-  margin: 20px;
-  margin-top: 0;
-}
-.H-edit .edit-top button {
-  background-color: #949aef;
-  border: none;
-}
-
-.H-edit .content {
-  border: 1px solid #e0e0e0;
-  width: 95%;
-  margin: 0 auto;
-}
-.H-edit .content .title {
-  border-bottom: 1px solid #e0e0e0;
-  background-color: #f8f8f8;
-  padding-left: 10px;
-}
-.H-edit .content .power {
-  padding-left: 10px;
-  display: flex;
-  border-bottom: 1px solid #e0e0e0;
-  min-height: 40px;
-  line-height: 40px;
-}
-.H-edit .content .power:last-child {
-  border-bottom: none;
-}
-.H-edit .content .power .tit {
-  padding-right: 10px;
-  text-align: right;
-  border-right: 1px solid #e0e0e0;
-  width: 200px;
-}
-.H-edit .content .power .el-checkbox-group {
-  padding-left: 20px;
-}
 </style>

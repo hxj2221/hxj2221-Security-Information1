@@ -166,7 +166,7 @@ export default {
       tables:[],
       Department:'',
       options:[],//上级科室
-      Founder:'12',
+      Founder:'4',
       disabled:false//不可更改
     };
   },
@@ -212,7 +212,7 @@ export default {
       console.log(row);
       let params={
         D_ID:row.D_ID,
-        U_Information_Change:12
+        U_Information_Change:4
       }
       // console.log(qs.stringify(params))
       service.DepState(qs.stringify(params)).then(res=>{
@@ -258,7 +258,7 @@ export default {
         Founder:this.editForm.Founder,
         D_Creat_Time:this.editForm.D_Creat_Time,
         D_State:this.editForm.D_State,
-        D_Information_Change:12
+        D_Information_Change:4
       }
       console.log(qs.stringify(params))
       service.DepSureEdit(qs.stringify(params)).then(res=>{

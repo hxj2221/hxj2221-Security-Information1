@@ -118,7 +118,7 @@ export default {
         CreateTime:'',
       },
       options: [],
-      Founder:'12'
+      Founder:'4'
     };
   },
   created(){
@@ -141,8 +141,8 @@ export default {
         D_Name:this.form.D_Name,
         Parent_D_ID:this.form.Parent_D_ID,
         CreateTime:this.form.CreateTime,
-        D_Founder:12,
-        D_Information_Change:12
+        D_Founder:4,
+        D_Information_Change:4
       }
       // console.log(qs.stringify(params))
       service.DepAdd(qs.stringify(params)).then(res=>{

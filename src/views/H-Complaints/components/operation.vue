@@ -30,8 +30,15 @@
           </slot>
         </div>
       </div>
-      <slot name="drawer"> </slot>
-
+      <el-drawer title="快捷查看" :visible.sync="drawer" :with-header="false" size='59%'>
+      
+          <ul class="infinite-list"  style="overflow:auto;height:870px;texr-aligin:center">
+             <Look  style="width:100%; margin:0px 0px;padding:0px 0px">
+          <div slot="title"></div>
+          </Look>
+          </ul>
+        
+      </el-drawer>
       <div class="operation-content">
         <!-- 基本信息 -->
         <div class="box-Information">
@@ -53,7 +60,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.D_I_Number }}</span>
+                  <span class="value">TS11545414544145</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -62,7 +69,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.E_S_Name }}</span>
+                  <span class="value">调查中</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -71,7 +78,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.D_Name }}</span>
+                  <span class="value">心血管内科/血液科</span>
                 </div></el-col
               >
             </el-row>
@@ -83,7 +90,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Name }}</span>
+                  <span class="value">张大牛</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -92,7 +99,7 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Gender }}</span>
+                  <span class="value">男</span>
                 </div></el-col
               >
               <el-col :span="4"
@@ -101,28 +108,58 @@
               >
               <el-col :span="4"
                 ><div class="grid-content bg-purple-light">
-                  <span class="value">{{ operationsdata.C_I_Age }}</span>
+                  <span class="value">65</span>
                 </div></el-col
               >
             </el-row>
 
             <div
-              style="
-                border-bottom: 0.5px solid #e0e2fa;
-                width: 100%;
-                margin-bottom: 20px;
-              "
+              style="border-bottom: 0.5px solid #e0e2fa; width: 100%; margin-bottom: 20px"
             ></div>
           </div>
         </div>
+        <!-- 经办人信息 -->
+        <div class="box-feedback" v-show="false">
+          <div class="box-top">
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="7" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="feedback-title"><b>经办人信息</b></span>
+                </div></el-col
+              >
+            </el-row>
+          </div>
+          <div class="feedback-content">
+            <!-- 操作区域 -->
 
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="10" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">经办人姓名:</span>
+                  <el-input
+                    type="input"
+                    v-model="reason"
+                    placeholder="请填写"
+                    autosize
+                  ></el-input></div
+              ></el-col>
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="10" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">经办人联系电话:</span>
+                  <el-input
+                    type="input"
+                    v-model="reason"
+                    placeholder="请填写"
+                    autosize
+                  ></el-input></div
+              ></el-col>
+            </el-row>
+          </div>
+        </div>
         <!-- 科室反馈 -->
-        <div
-          class="box-feedback"
-          v-if="
-            operationsdata.Event_State == 10 || operationsdata.Event_State == 20
-          "
-        >
+        <div class="box-feedback" v-show="false">
           <div class="box-top">
             <el-row type="flex" class="row-bg" justify="space-between">
               <el-col :span="7" :push="1"
@@ -134,7 +171,7 @@
           </div>
           <div class="feedback-content">
             <!-- 操作区域 -->
-            <div v-show="operationsdata.Event_State == 10">
+            <div>
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" :push="1"
                   ><div class="grid-content bg-purple">
@@ -142,9 +179,9 @@
                     <el-select v-model="peopel" multiple placeholder="请选择">
                       <el-option
                         v-for="item in options"
-                        :key="item.U_ID"
-                        :label="item.U_Name"
-                        :value="item.U_ID"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select></div
@@ -156,7 +193,7 @@
                     <span class="label">诊疗经过:</span>
                     <el-input
                       type="textarea"
-                      v-model="treatment"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
@@ -168,77 +205,79 @@
                     <span class="label">针对性答复:</span>
                     <el-input
                       type="textarea"
-                      v-model="response"
+                      v-model="reason"
                       placeholder="请填写"
                       autosize
                     ></el-input></div
                 ></el-col>
               </el-row>
             </div>
-            <!-- 改进完成科室 -->
-            <div v-show="operationsdata.Event_State == 20">
-              <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="6" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">选择责任人:</span>
-                    <el-select v-model="liable" placeholder="请选择责任人">
-                      <el-option
-                        v-for="item in liablelist"
-                        :key="item.U_ID"
-                        :label="item.U_Name"
-                        :value="item.U_ID"
-                      >
-                      </el-option>
-                    </el-select></div
-                ></el-col>
-              </el-row>
-              <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="20" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">根因分析:</span>
-                    <el-input
-                      type="textarea"
-                      v-model="analysis"
-                      placeholder="请填写"
-                      autosize
-                    ></el-input></div
-                ></el-col>
-              </el-row>
-              <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="20" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">责任意见:</span>
-                    <el-input
-                      type="textarea"
-                      v-model="responsibility"
-                      placeholder="请填写"
-                      autosize
-                    ></el-input></div
-                ></el-col>
-              </el-row>
-              <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="20" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">整改措施:</span>
-                    <el-input
-                      type="textarea"
-                      v-model="rectification"
-                      placeholder="请填写"
-                      autosize
-                    ></el-input></div
-                ></el-col>
-              </el-row>
-            </div>
+            <el-row
+              type="flex"
+              class="row-bg"
+              justify="space-between"
+              style="margin: 20px 0"
+            >
+              <el-col :span="15" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">附件信息:</span>
+                </div></el-col
+              >
+              <el-col :span="2" :pull="1"
+                ><div class="grid-content bg-purple">
+                  <el-button
+                    type="primary"
+                    icon="el-icon-circle-plus"
+                    @click="upfile()"
+                    style="background-color: #666ee8; border: none"
+                    >上传附件</el-button
+                  >
+                </div></el-col
+              >
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="22" :push="1"
+                ><div class="grid-content bg-purple">
+                  <el-table
+                    :data="filelist"
+                    style="width: 100%"
+                    :header-cell-style="getRowClass"
+                  >
+                    <el-table-column prop="ID" label="ID" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filename" label="文件名" width="width">
+                    </el-table-column>
+                    <el-table-column prop="describe" label="描述" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filesize" label="文件大小" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uptime" label="更新时间" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filetype" label="文件类型" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uploader" label="上传人员" width="width">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                      <template slot-scope="scope">
+                        <slot name="fileoper">
+                          <el-button
+                            @click="handleClick(scope.row)"
+                            type="text"
+                            size="small"
+                            >下载</el-button
+                          >
+                          <el-button type="text" size="small">删除</el-button>
+                        </slot>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div></el-col
+              >
+            </el-row>
           </div>
         </div>
         <!-- 审批操作 -->
-        <div
-          class="box-feedback"
-          v-show="
-            operationsdata.Event_State !== 10 &&
-            operationsdata.Event_State !== 20
-          "
-        >
+        <div class="box-feedback">
           <div class="box-top">
             <el-row type="flex" class="row-bg" justify="space-between">
               <el-col :span="7" :push="1"
@@ -254,550 +293,112 @@
               <el-row type="flex" class="row-bg" justify="space-between">
                 <el-col :span="6" :push="1"
                   ><div class="grid-content bg-purple">
-                    <span class="label">审批操作:</span>
-                    <el-select
-                      v-model="checkstate"
-                      placeholder="请选择事件状态"
-                    >
+                    <span class="label">下发科室:</span>
+                    <el-select v-model="peopel" multiple placeholder="请选择">
                       <el-option
-                        v-for="item in statelist"
-                        :key="item.D_M_ID"
-                        :label="item.D_M_Name"
-                        :value="item.D_M_ID"
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select></div
                 ></el-col>
               </el-row>
-              <!-- 经办人信息 -->
-
-              <!-- 退回 -->
-              <div v-show="checkstate == 9">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">退回原因:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="sendreson"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-              <!-- 驳回 -->
-              <div v-show="checkstate == 8">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">驳回原因:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="rejectreson"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-              <!-- 科室自查 -->
-              <div v-show="checkstate == 10">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">选择下发科室:</span>
-                      <el-cascader
-                        style="margin-left: 10px"
-                        ref="cascader"
-                        :options="issuelist"
-                        :props="{
-                          value: 'D_ID',
-                          label: 'Name',
-                          children: 'list',
-                          multiple: 'true',
-                        }"
-                        :show-all-levels="false"
-                        v-model="issue"
-                        clearable
-                      ></el-cascader></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div
-                      class="grid-content bg-purple"
-                      style="margin-left: 10px"
-                    >
-                      <span class="label">输入天数:</span>
-                      <el-input
-                        type="input"
-                        v-model="needtime"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-              <!-- 院内讨论 -->
-              <div v-show="checkstate == 12">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">选择抄送部门:</span>
-                      <el-cascader
-                        style="margin-left: 10px"
-                        ref="cascader"
-                        :options="issuelist"
-                        :props="{
-                          value: 'D_ID',
-                          label: 'Name',
-                          children: 'list',
-                          multiple: 'true',
-                        }"
-                        :show-all-levels="false"
-                        v-model="duplicate"
-                        clearable
-                      ></el-cascader></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">主要事实:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="facts"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">争议焦点:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="focus"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-              <!-- 医患沟通 -->
-              <div
-                v-show="
-                  checkstate == 13 ||
-                  checkstate == 15 ||
-                  checkstate == 16 ||
-                  checkstate == 17 ||
-                  checkstate == 18 ||
-                  checkstate == 19 ||
-                  checkstate == 14
-                "
-              >
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">约定日期:</span>
-                      <el-input
-                        style="margin-left: 10px"
-                        type="input"
-                        v-model="date"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row
-                  type="flex"
-                  class="row-bg"
-                  justify="space-between"
-                  v-show="
-                    checkstate == 13 ||
-                    checkstate == 15 ||
-                    checkstate == 16 ||
-                    checkstate == 17 ||
-                    checkstate == 18 ||
-                    checkstate == 19
-                  "
-                >
-                  <el-col :span="20" :push="1">
-                    <div
-                      class="grid-content bg-purple"
-                      v-show="checkstate == 13"
-                    >
-                      <span class="label">初步意见:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="preliminary"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input>
-                    </div>
-                    <div
-                      class="grid-content bg-purple"
-                      v-show="checkstate == 15 || checkstate == 19"
-                    >
-                      <span class="label">情况说明:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="note"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input>
-                    </div>
-                    <div
-                      v-show="checkstate == 16"
-                      class="grid-content bg-purple"
-                    >
-                      <span class="label">处理意见:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="Handling"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input>
-                    </div>
-                    <div
-                      v-show="checkstate == 17 || checkstate == 18"
-                      class="grid-content bg-purple"
-                    >
-                      <span class="label">事实及理由:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="reasons"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input>
-                    </div>
-                  </el-col>
-                </el-row>
-              </div>
-              <!-- 持续改进【科室】 -->
-              <div v-show="checkstate == 20">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">选择下发科室:</span>
-                      <el-cascader
-                        style="margin-left: 10px"
-                        ref="cascader"
-                        :options="Kaizenlist"
-                        :props="{
-                          value: 'D_ID',
-                          label: 'Name',
-                          children: 'list',
-                          multiple: 'true',
-                        }"
-                        :show-all-levels="false"
-                        v-model="Kaizen"
-                        clearable
-                      ></el-cascader></div
-                  ></el-col>
-                </el-row>
-              </div>
-
-              <!-- 改进完成医院 -->
-              <div v-show="checkstate == 23">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">处理意见:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="Handling"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">管理措施:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="measures"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-              <!-- 结束 -->
-              <div v-show="checkstate == 24">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">选择责任科室:</span>
-                      <el-cascader
-                        style="margin-left: 10px"
-                        ref="cascader"
-                        :options="dutylist"
-                        :props="{
-                          value: 'D_ID',
-                          label: 'Name',
-                          children: 'list',
-                          multiple: 'true',
-                        }"
-                        :show-all-levels="false"
-                        v-model="duty"
-                        clearable
-                      ></el-cascader></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">投诉类别:</span>
-                      <el-select v-model="type" placeholder="请选择投诉类别">
-                        <el-option
-                          v-for="item in typelist"
-                          :key="item.D_M_ID"
-                          :label="item.D_M_Name"
-                          :value="item.D_M_ID"
-                        >
-                        </el-option>
-                      </el-select></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="6" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">选择责任度:</span>
-                      <el-select v-model="degree" placeholder="请选择责任度">
-                        <el-option
-                          v-for="item in degreelist"
-                          :key="item.D_M_ID"
-                          :label="item.D_M_Name"
-                          :value="item.D_M_ID"
-                        >
-                        </el-option>
-                      </el-select></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">直接经济损失:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="loss"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="20" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">处理意见:</span>
-                      <el-input
-                        type="textarea"
-                        v-model="Handling"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
+              <el-row type="flex" class="row-bg" justify="space-between">
+                <el-col :span="20" :push="1"
+                  ><div class="grid-content bg-purple">
+                    <span class="label">主要事实:</span>
+                    <el-input
+                      type="textarea"
+                      v-model="reason"
+                      placeholder="请填写"
+                      autosize
+                    ></el-input></div
+                ></el-col>
+              </el-row>
+              <el-row type="flex" class="row-bg" justify="space-between">
+                <el-col :span="20" :push="1"
+                  ><div class="grid-content bg-purple">
+                    <span class="label">争议焦点:</span>
+                    <el-input
+                      type="textarea"
+                      v-model="reason"
+                      placeholder="请填写"
+                      autosize
+                    ></el-input></div
+                ></el-col>
+              </el-row>
             </div>
-            <div
-              class="box-feedback"
-              v-show="
-                checkstate == 8 ||
-                checkstate == 9 ||
-                checkstate == 7 ||
-                checkstate == 10
-              "
+            <el-row
+              type="flex"
+              class="row-bg"
+              justify="space-between"
+              style="margin: 20px 0"
             >
-              <div class="box-top">
-                <el-row type="flex" class="row-bg" justify="space-between">
-                  <el-col :span="7" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="feedback-title"><b>经办人信息</b></span>
-                    </div></el-col
+              <el-col :span="15" :push="1"
+                ><div class="grid-content bg-purple">
+                  <span class="label">附件信息:</span>
+                </div></el-col
+              >
+              <el-col :span="2" :pull="1"
+                ><div class="grid-content bg-purple">
+                  <el-button
+                    type="primary"
+                    icon="el-icon-circle-plus"
+                    @click="upfile()"
+                    style="background-color: #666ee8; border: none"
+                    >上传附件</el-button
                   >
-                </el-row>
-              </div>
-              <div class="feedback-content">
-                <!-- 操作区域 -->
-
-                <el-row
-                  type="flex"
-                  class="row-bg"
-                  justify="space-between"
-                  style="margin-left: 10px"
-                >
-                  <el-col :span="10" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">经办人姓名:</span>
-                      <el-input
-                        type="input"
-                        v-model="agentname"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-                <el-row
-                  type="flex"
-                  class="row-bg"
-                  justify="space-between"
-                  style="margin-left: 10px"
-                >
-                  <el-col :span="10" :push="1"
-                    ><div class="grid-content bg-purple">
-                      <span class="label">经办人联系电话:</span>
-                      <el-input
-                        type="input"
-                        v-model="agentphone"
-                        placeholder="请填写"
-                        autosize
-                      ></el-input></div
-                  ></el-col>
-                </el-row>
-              </div>
-            </div>
-            <!-- 附件 -->
-            <div
-              v-show="
-                checkstate == 11 ||
-                checkstate == 12 ||
-                checkstate == 14 ||
-                checkstate == 15 ||
-                checkstate == 17 ||
-                checkstate == 18 ||
-                checkstate == 19 ||
-                checkstate == 22 ||
-                checkstate == 23
-              "
-            >
-              <el-row
-                type="flex"
-                class="row-bg"
-                justify="space-between"
-                style="margin: 20px 0"
+                </div></el-col
               >
-                <el-col :span="15" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <span class="label">附件信息:</span>
-                  </div></el-col
-                >
-                <el-col :span="2" :pull="1"
-                  ><div class="grid-content bg-purple">
-                    <el-button
-                      type="primary"
-                      icon="el-icon-circle-plus"
-                      @click="upfile()"
-                      style="background-color: #666ee8; border: none"
-                      >上传附件</el-button
-                    >
-                  </div></el-col
-                >
-              </el-row>
-              <el-row
-                type="flex"
-                class="row-bg"
-                justify="space-between"
-                v-show="filelist.length !== 0"
+            </el-row>
+            <el-row type="flex" class="row-bg" justify="space-between">
+              <el-col :span="22" :push="1"
+                ><div class="grid-content bg-purple">
+                  <el-table
+                    :data="filelist"
+                    style="width: 100%"
+                    :header-cell-style="getRowClass"
+                  >
+                    <el-table-column prop="ID" label="ID" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filename" label="文件名" width="width">
+                    </el-table-column>
+                    <el-table-column prop="describe" label="描述" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filesize" label="文件大小" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uptime" label="更新时间" width="width">
+                    </el-table-column>
+                    <el-table-column prop="filetype" label="文件类型" width="width">
+                    </el-table-column>
+                    <el-table-column prop="uploader" label="上传人员" width="width">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                      <template slot-scope="scope">
+                        <slot name="fileoper">
+                          <el-button
+                            @click="handleClick(scope.row)"
+                            type="text"
+                            size="small"
+                            >下载</el-button
+                          >
+                          <el-button type="text" size="small">删除</el-button>
+                        </slot>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div></el-col
               >
-                <el-col :span="22" :push="1"
-                  ><div class="grid-content bg-purple">
-                    <el-table
-                      :data="filelist"
-                      style="width: 100%"
-                      :header-cell-style="getRowClass"
-                    >
-                      <el-table-column prop="ID" label="ID" width="width">
-                      </el-table-column>
-                      <el-table-column
-                        prop="filename"
-                        label="文件名"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="describe"
-                        label="描述"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="filesize"
-                        label="文件大小"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="uptime"
-                        label="更新时间"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="filetype"
-                        label="文件类型"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="uploader"
-                        label="上传人员"
-                        width="width"
-                      >
-                      </el-table-column>
-                      <el-table-column fixed="right" label="操作" width="100">
-                        <template slot-scope="scope">
-                          <slot name="fileoper">
-                            <el-button
-                              @click="handleClick(scope.row)"
-                              type="text"
-                              size="small"
-                              >下载</el-button
-                            >
-                            <el-button type="text" size="small">删除</el-button>
-                          </slot>
-                        </template>
-                      </el-table-column>
-                    </el-table>
-                  </div></el-col
-                >
-              </el-row>
-            </div>
+            </el-row>
           </div>
         </div>
         <!-- 提交 -->
         <div class="box-button">
           <slot name="submit">
-            <el-button
-              type="primary"
-              icon="el-icon-finished"
-              v-show="
-                (checkstate !== 10 &&
-                  checkstate !== 20 &&
-                  checkstate !== 9 &&
-                  checkstate !== 8) ||
-                operationsdata.Event_State == 10
-              "
-              @click="submit"
-              >确认提交</el-button
-            >
-            <el-button
-              type="primary"
-              v-show="checkstate == 10 || checkstate == 20"
-              @click="Issue"
-              >下发</el-button
-            >
-            <el-button type="primary" v-show="checkstate == 9" @click="send"
-              >退回</el-button
-            >
-            <el-button type="primary" v-show="checkstate == 8" @click="reject"
-              >驳回</el-button
-            >
+            <el-button type="primary" icon="el-icon-finished">确认提交</el-button>
+            <el-button type="primary">下发</el-button>
           </slot>
         </div>
       </div>
@@ -814,10 +415,7 @@
         >
           <el-form ref="form" label-width="90px">
             <el-form-item label="文件标题：">
-              <el-input
-                v-model="filetitle"
-                placeholder="请输入文件标题"
-              ></el-input>
+              <el-input v-model="filetitle" placeholder="请输入文件标题"></el-input>
             </el-form-item>
             <el-form-item label="文件描述：">
               <el-input
@@ -848,51 +446,14 @@
   </div>
 </template>
 <script>
-import service from "@/service";
 import Look from "../components/Look";
-import qss from "@/service/qs";
-import qs from "qs";
+
 export default {
-  props: { operationsdata: "" },
   components: {
     Look,
   },
   data() {
     return {
-      duplicate: "", //抄送部门
-      rejectreson: "", //驳回原因
-      sendreson: "", //退回原因
-      reasons: "", //事实及理由
-      Handling: "", //处理意见
-      note: "", //情况说明
-      date: "", //约定日期
-      liable: "", //责任人
-      liablelist: [], //责任人列表
-      type: "", //投诉类别
-      typelist: "", //投诉类别列表
-      degree: "", //责任度
-      degreelist: [], //责任度列表
-      agentname: "", //经办人姓名
-      agentphone: "", //经办人联系方式
-      treatment: "", // 诊疗经过
-      response: "", //针对性答复
-      needtime: "", //输入天数
-      issue: "", //下发科室
-      issuelist: [], //科室列表
-      Kaizen: "", //持续改进
-      Kaizenlist: [], //科室列表
-      duty: "", //责任科室
-      dutylist: [], //责任科室列表
-      facts: "", //主要事实
-      focus: "", //争议焦点
-      analysis: "", //根因分析
-      loss: "", //经济损失
-      responsibility: "", //责任意见
-      measures: "", //管理措施
-      rectification: "", //整改措施
-      preliminary: "", //初步意见
-      checkstate: "请选择", //选中状态
-      statelist: [], //状态列表
       drawer: false,
       uploadfile: "", //上传附件
       filedescribe: "", //文件描述
@@ -906,383 +467,43 @@ export default {
       options: [
         //员工列表
         {
-          value: "1",
-          lable: "终止",
+          value: 1,
+          value: 1,
         },
       ],
       filelist: [
-        // {
-        //   ID: "FJ20201229001",
-        //   filename: "调解书",
-        //   describe: "这是一个调解书",
-        //   filesize: "32.23kb",
-        //   uptime: "2020-12-02 20:56:37",
-        //   filetype: "jpg",
-        //   uploader: "王丽",
-        // }
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
+
+        {
+          ID: "FJ20201229001",
+          filename: "调解书",
+          describe: "这是一个调解书",
+          filesize: "32.23kb",
+          uptime: "2020-12-02 20:56:37",
+          filetype: "jpg",
+          uploader: "王丽",
+        },
       ],
     };
   },
   methods: {
-    //确认提交
-    submit() {
-      //改进完成（科室）
-      if (this.$parent.operationsdata.E_S_ID == 20) {
-        let data = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          U_ID: this.liable, //责任人
-          K_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          E_Number: "", //附件编号
-          K_Analysis: this.analysis, //根因分析
-          K_Opinion: this.responsibility, //责任意见
-          K_Measures: this.rectification, //整改措施
-          K_Identification: 1, //持续改进标识 1 为科室
-        };
-        console.log(123);
-        service.AddKaizen(qs.stringify(data)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //科室调查
-      else if (this.$parent.operationsdata.E_S_ID == 10) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          E_Number: "", //附件编号
-          Peopel: this.peopel.toString(), //当事员工
-          I_After: this.treatment, //诊疗经过
-          I_Reply: this.response, //针对性答复
-        };
-        service.AddInvestigation(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //改进完成（医院）
-      else if (this.checkstate == 23) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          K_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          K_Identification: 0, //持续改进标识 0 为医院
-          E_Number: "", //附件编号
-          K_Opinion: this.Handling, //处理意见
-          K_Measures: this.measures, //管理措施
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //院内讨论
-      else if (this.checkstate == 12) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          CC: this.duplicate, //抄送部门
-          A_Main_Facts: this.facts, //主要事实
-          A_Dispute: this.focus, //争议焦点
-          E_Number: "", //附件编号
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //医患沟通中
-      else if (this.checkstate == 13) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          A_Preliminary_Comments: this.preliminary, //初步意见
-          A_Appointment_Date: this.date, //约定日期
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }
-      //人民调解
-      else if (this.checkstate == 14) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          A_Appointment_Date: this.date, //约定日期
-          E_Number: "", //附件编号
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }
-      //责任鉴定中、司法诉讼
-      else if (this.checkstate == 15 || this.checkstate == 19) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          A_Appointment_Date: this.date, //约定日期
-          A_Information_Note: this.note, //情况说明
-          E_Number: "", //附件编号
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //患方推迟
-      else if (this.checkstate == 16) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          A_Opinion: this.Handling, //处理意见
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } //中止调解、终止调解
-      else if (this.checkstate == 17 || this.checkstate == 18) {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          A_Reason: this.reasons, //事实及理由
-          E_Number: "", //附件编号
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }
-      //已结束
-      else if (this.checkstate == 24) {
-         let duty = "";
-        if (this.duty !== "") {
-          duty = this.duty.map((x) => {
-            return x[1];
-          });
-        }
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          Duty: duty.toString(), //责任科室
-          Complaint_D_M_ID: this.type, //投诉类别
-          A_Degree: this.degree, //责任度
-          A_Economic_Loss: this.loss, //直接经济损失
-          A_Opinion: this.Handling, //处理意见
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      } else {
-        let params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "操作失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }
-    },
-
-    // 退回
-    send() {
-      var params = {
-        D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-        New_D_M_ID: this.checkstate, //选中状态
-        A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-        D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-        New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
-        Ag_Phone: this.agentphone, //经办人联系方式
-        A_Return_Reasons: this.sendreson, //退回原因
-      };
-      service.AddApproval(qs.stringify(params)).then((res) => {
-        if (res.code == 0) {
-          this.$router.go(0);
-        } else {
-          this.$message({
-            message: "退回失败",
-            type: "error",
-            duration: 1000,
-          });
-        }
-      });
-    },
-    // 驳回
-    reject() {
-      var params = {
-        D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-        New_D_M_ID: this.checkstate, //选中状态
-        A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-        D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-        New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
-        Ag_Phone: this.agentphone, //经办人联系方式
-        A_Reject_Reasons: this.rejectreson, //驳回原因
-      };
-      service.AddApproval(qs.stringify(params)).then((res) => {
-        if (res.code == 0) {
-          this.$router.go(0);
-        } else {
-          this.$message({
-            message: "驳回失败",
-            type: "error",
-            duration: 1000,
-          });
-        }
-      });
-    },
-    // 下发
-    Issue() {
-      //科室自查
-      if (this.checkstate == 10) {
-        let issue = "";
-        if (this.issue !== "") {
-          issue = this.issue.map((x) => {
-            return x[1];
-          });
-        }
-        var params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          New_Ag_Name: this.agentname, //新的经办人                                  经办人变更要不要记录
-          Ag_Phone: this.agentphone, //经办人联系方式
-          D_Name: issue.toString(), //下发科室
-          A_Input: this.needtime, //输入天数
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "下发失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }//持续改进（科室） 
-      else if (this.checkstate == 20) {
-        let Kaizen = "";
-        if (this.Kaizen !== "") {
-          Kaizen = this.Kaizen.map((x) => {
-            return x[1];
-          });
-        }
-        var params = {
-          D_I_Number: this.$parent.operationsdata.D_I_Number, //事件编号
-          A_Operation: sessionStorage.getItem("uid"), //当前登录人id
-          New_D_M_ID: this.checkstate, //选中状态
-          D_M_ID: this.$parent.operationsdata.E_S_ID, //改变前的状态
-          Kaizen: Kaizen.toString(), //持续改进（科室）
-          K_Identification: 1, //持续改进标识 1 为科室
-        };
-        service.AddApproval(qs.stringify(params)).then((res) => {
-          if (res.code == 0) {
-            this.$router.go(0);
-          } else {
-            this.$message({
-              message: "下发失败",
-              type: "error",
-              duration: 1000,
-            });
-          }
-        });
-      }
-    },
     handleClose() {
       this.dialogVisibless = false;
     },
@@ -1311,31 +532,7 @@ export default {
       }
     },
   },
-  created() {
-    var id = sessionStorage.getItem("uid"); //当前登录人id 1 医务处  2 科室三  4 科室二
-    // console.log(id)
-    service.AddManaged(4).then((res) => {
-      res.data.splice(0, 1);
-      res.data.splice(3, 1);
-      res.data.splice(13, 1);
-      this.statelist = res.data;
-    });
-    service.AddManaged(3).then((res) => {
-      this.typelist = res.data;
-    });
-    service.AddManaged(9).then((res) => {
-      this.degreelist = res.data;
-    });
-    service.AddDepartment().then((res) => {
-      this.issuelist = res.data;
-      this.dutylist = res.data;
-      this.Kaizenlist = res.data;
-    });
-    service.Party(id).then((res) => {
-      this.liablelist = res.Party;
-      this.options = res.Party;
-    });
-  },
+  created() {},
 };
 </script>
 <style scoped>

@@ -49,8 +49,8 @@
             ></el-option>
           </el-select> -->
 
-          <img
-            :src="src"
+          <!-- <img
+            src="http://bt1.wlqqlp.com:8082/api/login/captcha"
              title="看不清？点击切换"
             @click="reloadcode()"
             style="height:40px"
@@ -60,7 +60,7 @@
             placeholder="请输入验证码"
             v-model="ruleForm.captcha"
             class="codeinput"
-          ></el-input>
+          ></el-input> -->
         </el-form-item>
         <div class="loginRem">
           <el-checkbox
@@ -100,7 +100,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      src: "",
+      src: "http://bt1.wlqqlp.com:8082/api/login/captcha",
       height: 0,
       options: [
         {
@@ -124,11 +124,6 @@ export default {
         "src",
         verifyimg.replace(/\?.*$/, "") + "?" + Math.random()
       );
-      service.VerificationCode().then(res=>{
-      // console.log(res.img)
-      this.src="data:image/png;base64,"+res.img;
-      console.log(this.src);
-    })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -136,11 +131,11 @@ export default {
           let params = {
             Account: this.ruleForm.account,
             Pwd: this.ruleForm.password,
-            cbx:this.remember==true?"on":this.remember,
-            code:this.ruleForm.captcha,
           };
           this.logining = true;
+          console.log(JSON.stringify);
           service.login(qs.stringify(params)).then((res) => {
+                     console.log(res)    
               if (res.code === 0) {
                 sessionStorage.setItem("account", this.ruleForm.account);
                 sessionStorage.setItem("password", this.ruleForm.password);
@@ -164,6 +159,7 @@ export default {
         }
       });
     },
+
     // 判断是否是移动端打开
     _isMobile() {
       let flag = navigator.userAgent.match(
@@ -187,16 +183,6 @@ export default {
     // var heights=document.getElementsByClassName('login')
     //  var div_height = window.screen.availHeight;
     // $(".login").height(div_height);
-    //记住密码
-    service.remember().then((res) => {
-    //  console.log(res.account)
-    //  console.log(res.pwd)
-     this.ruleForm.account=res.account;
-     this.ruleForm.password=res.pwd;
-    });
-    service.VerificationCode().then(res=>{
-      this.src="data:image/png;base64,"+res.img;
-    })
   },
 };
 </script>

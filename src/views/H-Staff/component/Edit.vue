@@ -267,7 +267,6 @@ export default {
   data() {
     return {
       options: regionData,
-
       addStaff: {
         U_ID:'',
         U_Number: "", // 员工编号
@@ -284,7 +283,7 @@ export default {
         Pwd: "", //密码
         U_Address: '', //地址
         D_ID: "", //所属科室
-        U_Information_Change:12,
+        U_Information_Change:4,
         R_ID:'', //角色
       },
       
@@ -331,7 +330,7 @@ export default {
     staffaddvueyes() {
       let params ={
         U_ID:this.addStaff.U_ID,
-        U_Information_Change:12,//用户ID
+        U_Information_Change:4,//用户ID
         U_Number:this.addStaff.U_Number,
         U_Name:this.addStaff.U_Name,
         U_Age:this.addStaff.U_Age,
